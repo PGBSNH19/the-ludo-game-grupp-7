@@ -28,7 +28,16 @@ GameEngine
 
   
 
-Position 
+Game
+
+| Responsibility | Collaborators |
+| -------------- | ------------- |
+| IsFinished     | GameEngine    |
+| GameID         | Position      |
+| Winner         |               |
+| TimeOfGame     |               |
+
+Position
 
 | Responsibility | Collaborators |
 | -------------- | ------------- |
