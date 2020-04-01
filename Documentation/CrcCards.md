@@ -66,7 +66,7 @@ Player
 
 | Responsibility | Collaborators |
 | -------------- | ------------- |
-| c              | GameEngine    |
+| color          | GameEngine    |
 | Score          |               |
 |                |               |
 
