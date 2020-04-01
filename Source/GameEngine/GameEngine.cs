@@ -9,9 +9,10 @@ namespace LudoGameEngine
         public int PlayerScore { get; set; }
         public int Dice { get; set; }
 
-        public void MoveSelectedGamePiece()
-        {
 
+
+        public void MoveGamePiece()
+        {
         }
 
         public void ChangeTurn()
@@ -24,5 +25,12 @@ namespace LudoGameEngine
 
         }
 
+        public GamePiece SelectGamePiece()
+        {
+
+            Console.WriteLine("Choose the game piece you want to move: ");
+            Console.ReadLine();
+            return ;
+        }
     }
 }

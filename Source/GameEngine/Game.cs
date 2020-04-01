@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GameEngine
+namespace LudoGameEngine
 {
     public class Game
     {

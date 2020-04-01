@@ -1,6 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Xunit;
-using GameEngine;
+using LudoGameEngine;
 
 namespace LudoGame.Tests
 {
@@ -10,8 +11,8 @@ namespace LudoGame.Tests
         public void GamePiece_MoveGamePiece_Move3Positions()
         {
             //arrange
-            GamePiece gp = new GamePiece();
-            int dice = 3;
+            //GamePiece gp = new GamePiece();
+            //int dice = 3;
             //act
             //assert
 
@@ -29,7 +30,19 @@ namespace LudoGame.Tests
             Assert.InRange(die,1,6);
 
         }
-            
+
+        [Fact]
+        public void CreatePlayer_GenerateGamePieces_AddToList()
+        {
+            //arrange
+            Player a = new Player(Color.red);
+
+            //act
+
+            //assert
+            Assert.Equal(5, a.GamePieces.Count);
+        }
+
 
     }
 }

@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameEngine
+namespace LudoGameEngine
 {
-    class GamePiece
+    public class GamePiece
     {
+        public int PositionID { get; set; }
+        public int GamePieceID { get; set; }
+
+        public bool IsSelected { get; set; }
     }
 }
