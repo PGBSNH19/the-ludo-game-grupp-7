@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GameEngine\GameEngine.csproj" />
+    <ProjectReference Include="..\GameEngine\LudoGameEngine.csproj" />
     <ProjectReference Include="..\LudoGame\LudoGame.csproj" />
   </ItemGroup>
 

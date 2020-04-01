@@ -4,6 +4,11 @@ namespace GameEngine
 {
     public class Game
     {
+        public bool IsFinished { get; set; }
+        public int GameID { get; set; }
+        public Player Winner { get; set; }
+        public DateTime TimeOfGame { get; set; }
+
 
         public int RollDice()
         {
