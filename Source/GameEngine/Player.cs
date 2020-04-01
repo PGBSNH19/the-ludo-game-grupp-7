@@ -15,7 +15,6 @@ namespace LudoGameEngine
         {
             Color = _color;
             Score = 0;
-            GamePieces = GenerateGamePieces();
         }
 
         public List<GamePiece> GenerateGamePieces()
@@ -27,6 +26,14 @@ namespace LudoGameEngine
 
             return GamePieces;
 
+        }
+
+        public Player InitializePlayer(Color _color)
+        {
+            Player player = new Player(_color);
+            player.GamePieces = GenerateGamePieces();
+
+            return this;
         }
     }
 }

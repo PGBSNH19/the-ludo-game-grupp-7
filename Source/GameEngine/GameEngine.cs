@@ -30,7 +30,7 @@ namespace LudoGameEngine
 
             Console.WriteLine("Choose the game piece you want to move: ");
             Console.ReadLine();
-            return ;
+            return null;
         }
     }
 }
