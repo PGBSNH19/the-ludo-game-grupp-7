@@ -1,8 +1,9 @@
-﻿using System;
+﻿using LudoGameEngine;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TheSpacePort
+namespace LudoGame
 {
     public class Menu
     {
@@ -42,23 +43,23 @@ namespace TheSpacePort
 
             var optionChoosen = Console.ReadKey().Key;
 
-            switch (optionChoosen)
-            {
-                case ConsoleKey.D1:
-                    _gameEngine.StartNewGame();
-                    break;
+            //switch (optionChoosen)
+            //{
+            //    case ConsoleKey.D1:
+            //        _gameEngine.StartNewGame();
+            //        break;
 
-                case ConsoleKey.D2:
-                    _gameEngine.LoadGame();
-                    break;
+            //    case ConsoleKey.D2:
+            //        _gameEngine.LoadGame();
+            //        break;
 
-                case ConsoleKey.D3:
-                    _gameEngine.CheckGameHistory();
-                    break;
+            //    case ConsoleKey.D3:
+            //        _gameEngine.CheckGameHistory();
+            //        break;
 
-                default:
-                    break;
-            }
+            //    default:
+            //        break;
+            //}
 
         }
 
