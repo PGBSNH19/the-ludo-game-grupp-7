@@ -25,3 +25,12 @@ Skapat en metod för att generera 4 pjäser till varje spelare.
  
 
 Skapat en visualisering för vårat positions-system/spelbräda.
+
+
+
+**2020-04-02**
+
+Gjorde ändringar i flera klasser, bl.a. GamePiece, player, GameEngine. Refaktorering av onödig kod och vi har tänkt om gällande hur vårt spelbräde ser ut. 
+
+Positioner kommer hållas koll på genom GamePieces.
+

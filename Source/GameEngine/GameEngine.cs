@@ -29,8 +29,18 @@ namespace LudoGameEngine
             return rnd.Next(1, 7);
         }
 
-        public void MoveGamePiece()
+        public GamePiece MoveGamePiece(GamePiece gamePiece)
         {
+            var dice = RollDice();
+
+            gamePiece.Position.BoardPosition = gamePiece.Position.BoardPosition + dice;
+
+            return gamePiece;
+        }
+
+        public void StepCounter()
+        {
+
         }
 
         public void ChangeTurn()
