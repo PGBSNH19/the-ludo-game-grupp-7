@@ -9,6 +9,11 @@ namespace LudoGameEngine
         private int turn = 0;
         private List<Player> players = new List<Player>();
 
+        public void StartNewGame()
+        {
+
+        }
+
         public void AddPlayer(string name)
         {
             if (players.Count == 0)
@@ -35,12 +40,38 @@ namespace LudoGameEngine
 
             gamePiece.Position.BoardPosition = gamePiece.Position.BoardPosition + dice;
 
+            gamePiece.StepCounter = gamePiece.StepCounter + dice;
+            gamePiece = StepCounter(gamePiece, dice);
+
             return gamePiece;
         }
 
-        public void StepCounter()
+        public GamePiece StepCounter(GamePiece gamePiece, int dice)
         {
+            if(gamePiece.StepCounter >= 40)
+            {
+                gamePiece.Position.positionType = PositionType.InnerPath;
 
+                var innerPathSteps = gamePiece.StepCounter - 40;
+
+                gamePiece.StepCounter = gamePiece.StepCounter + innerPathSteps;
+                gamePiece.Position.BoardPosition = gamePiece.Position.BoardPosition = innerPathSteps;
+
+                if(gamePiece.StepCounter > 5)
+                {
+                    gamePiece.StepCounter -= 5;
+                }
+                else if(gamePiece.StepCounter == 5)
+                {
+                    players[0].Score += 1;
+                }
+                else
+                {
+                    gamePiece.StepCounter += dice;
+                }
+
+            }
+                return gamePiece;
         }
 
         public void ChangeTurn()

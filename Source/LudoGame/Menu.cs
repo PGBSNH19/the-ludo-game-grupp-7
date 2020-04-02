@@ -7,10 +7,11 @@ namespace LudoGame
 {
     public class Menu
     {
-        GameEngine _gameEngine;
-        public Menu(GameEngine gameEngine)
+        GameEngine GameEngine;
+
+        public Menu()
         {
-            _gameEngine = gameEngine;
+            GameEngine = new GameEngine();
         }
 
         public void MenuHeader()
@@ -19,14 +20,13 @@ namespace LudoGame
             Console.ForegroundColor = ConsoleColor.Yellow;
             var header = new[]
             {
-             @"_    _      _                            _          _               _
-| |  | |    | |                          | |        | |             | |
-| |  | | ___| | ___ ___  _ __ ___   ___  | |_ ___   | |    _   _  __| | ___
-| |/\| |/ _ \ |/ __/ _ \| '_ ` _ \ / _ \ | __/ _ \  | |   | | | |/ _` |/ _ \ 
-\  /\  /  __/ | (_| (_) | | | | | |  __/ | || (_) | | |___| |_| | (_| | (_) |
- \/  \/ \___|_|\___\___/|_| |_| |_|\___|  \__\___/  \_____/\__,_|\__,_|\___/
+                @" _    _      _                            _          _               _",
+                @"| |  | |    | |                          | |        | |             | |",
+                @"| |  | | ___| | ___ ___  _ __ ___   ___  | |_ ___   | |    _   _  __| | ___",
+                @"| |/\| |/ _ \ |/ __/ _ \| '_ ` _ \ / _ \ | __/ _ \  | |   | | | |/ _` |/ _ \ ",
+                @"\  /\  /  __/ | (_| (_) | | | | | |  __/ | || (_) | | |___| |_| | (_| | (_) |",
+                @" \/  \/ \___|_|\___\___/|_| |_| |_|\___|  \__\___/  \_____/\__,_|\__,_|\___/",
 
-                                                                             __|\__|",
         };
 
             foreach (var line in header)
@@ -43,23 +43,23 @@ namespace LudoGame
 
             var optionChoosen = Console.ReadKey().Key;
 
-            //switch (optionChoosen)
-            //{
-            //    case ConsoleKey.D1:
-            //        _gameEngine.StartNewGame();
-            //        break;
+            switch (optionChoosen)
+            {
+                case ConsoleKey.D1:
+                    GameEngine.StartNewGame();
+                    break;
 
-            //    case ConsoleKey.D2:
-            //        _gameEngine.LoadGame();
-            //        break;
+                case ConsoleKey.D2:
+                    //GameEngine.LoadGame();
+                    break;
 
-            //    case ConsoleKey.D3:
-            //        _gameEngine.CheckGameHistory();
-            //        break;
+                case ConsoleKey.D3:
+                    //GameEngine.CheckGameHistory();
+                    break;
 
-            //    default:
-            //        break;
-            //}
+                default:
+                    break;
+            }
 
         }
 

@@ -8,9 +8,13 @@ namespace LudoGame
     {
         static void Main(string[] args)
         {
-            Game dice = new Game();
-            dice.RollDice();
-            Console.WriteLine();
+            Menu menu = new Menu();
+            while(true)
+            {
+                menu.MenuHeader();
+                menu.MenuOptions();
+                Console.Clear();
+            }
         }
     }
 }
