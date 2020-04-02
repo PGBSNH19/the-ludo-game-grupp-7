@@ -12,21 +12,22 @@ namespace LudoGameEngine
         public void StartNewGame()
         {
 
+
         }
 
         public void AddPlayer(string name)
         {
             if (players.Count == 0)
-                players.Add(new Player(Color.red, name));
+                players.Add(new Player(Color.Red, name));
 
             else if (players.Count == 1)
-                players.Add(new Player(Color.blue, name));
+                players.Add(new Player(Color.Blue, name));
 
             else if (players.Count == 2)
-                players.Add(new Player(Color.yellow, name));
+                players.Add(new Player(Color.Yellow, name));
 
             else if (players.Count == 3)
-                players.Add(new Player(Color.green, name));
+                players.Add(new Player(Color.Green, name));
         }
         public int RollDice()
         {
@@ -38,7 +39,7 @@ namespace LudoGameEngine
         {
             var dice = RollDice();
 
-            gamePiece.Position.BoardPosition = gamePiece.Position.BoardPosition + dice;
+            gamePiece.position.BoardPosition = gamePiece.position.BoardPosition + dice;
 
             gamePiece.StepCounter = gamePiece.StepCounter + dice;
             gamePiece = StepCounter(gamePiece, dice);
@@ -50,12 +51,12 @@ namespace LudoGameEngine
         {
             if(gamePiece.StepCounter >= 40)
             {
-                gamePiece.Position.positionType = PositionType.InnerPath;
+                gamePiece.position.positionType = PositionType.InnerPath;
 
                 var innerPathSteps = gamePiece.StepCounter - 40;
 
                 gamePiece.StepCounter = gamePiece.StepCounter + innerPathSteps;
-                gamePiece.Position.BoardPosition = gamePiece.Position.BoardPosition = innerPathSteps;
+                gamePiece.position.BoardPosition = gamePiece.position.BoardPosition = innerPathSteps;
 
                 if(gamePiece.StepCounter > 5)
                 {

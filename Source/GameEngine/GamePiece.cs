@@ -6,7 +6,7 @@ namespace LudoGameEngine
 {
     public class GamePiece
     {
-        public Position Position { get; set; }
+        public Position position { get; set; }
         public int StepCounter { get; set; }
     }
 }

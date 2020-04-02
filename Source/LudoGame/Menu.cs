@@ -46,7 +46,7 @@ namespace LudoGame
             switch (optionChoosen)
             {
                 case ConsoleKey.D1:
-                    GameEngine.StartNewGame();
+                    StartLobby();
                     break;
 
                 case ConsoleKey.D2:
@@ -60,6 +60,21 @@ namespace LudoGame
                 default:
                     break;
             }
+
+        }
+        public void StartLobby()
+        {
+            Console.WriteLine("How many players?");
+            int playerAmount = int.Parse(Console.ReadLine());
+            for (int i = 0; i < playerAmount; i++)
+            {
+                Console.WriteLine($"{Enum.GetName(typeof(Color), i)} player, choose your name: ");
+                var name = Console.ReadLine();
+                GameEngine.AddPlayer(name);
+            }
+            Console.WriteLine("All players are reday, press any key to start game");
+            Console.ReadKey();
+            GameEngine.StartNewGame();
 
         }
 
