@@ -35,7 +35,7 @@ namespace LudoGameEngine.Tests
         public void CreatePlayer_GenerateGamePieces_AddToList()
         {
             //arrange
-            Player a = new Player(Color.red, "Per");
+            Player a = new Player(Color.Red, "Per");
 
             //act
 
@@ -44,6 +44,8 @@ namespace LudoGameEngine.Tests
             Assert.NotEmpty(a.GamePieces);
 
         }
+
+
 
        
 

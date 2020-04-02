@@ -11,6 +11,8 @@ namespace LudoGameEngine
         public int Turn = 0;
         public int Score { get; set; }
 
+        public int StartingDice { get; set; }
+
         public List<GamePiece> GamePieces = new List<GamePiece>();
 
         public Player(Color color, string name)

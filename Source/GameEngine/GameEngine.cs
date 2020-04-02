@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace LudoGameEngine
 {
@@ -8,10 +9,13 @@ namespace LudoGameEngine
     {
         private int turn = 0;
         private List<Player> players = new List<Player>();
+        private List<Player> playerOrder = new List<Player>();
 
         public void StartNewGame()
         {
 
+            var dice = RollDice();
+            
 
         }
 
@@ -35,9 +39,8 @@ namespace LudoGameEngine
             return rnd.Next(1, 7);
         }
 
-        public GamePiece MoveGamePiece(GamePiece gamePiece)
+        public GamePiece MoveGamePiece(GamePiece gamePiece, int dice)
         {
-            var dice = RollDice();
 
             gamePiece.position.BoardPosition = gamePiece.position.BoardPosition + dice;
 
@@ -80,8 +83,41 @@ namespace LudoGameEngine
 
         }
 
-        public void ChooseStaringPlayer()
+       public void ChooseStartingPlayer()
         {
+            var dice = 0;
+            while (players.Count != playerOrder.Count)
+            {
+                foreach (Player player in players)
+                {
+                    dice = RollDice();
+                    player.StartingDice = dice;
+                    Console.WriteLine($"{player.Name} rolled {dice}.");
+                }
+
+            playerOrder = players.OrderBy(p => p.StartingDice).ToList();
+
+            }
+        }
+
+        public void MoveGamePieceToBoard()
+        {
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                Console.WriteLine($"{Enum.GetName(typeof(Color), i)} player rolls the dice.");
+                var dice = RollDice();
+                Console.WriteLine($"The dice rolled {dice}.");
+
+                if (dice == 6 || dice == 1)
+                {
+
+                }
+                else
+                {
+                    Console.WriteLine();
+                }
+            }
 
         }
 
