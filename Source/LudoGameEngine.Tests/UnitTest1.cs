@@ -35,10 +35,9 @@ namespace LudoGameEngine.Tests
         public void CreatePlayer_GenerateGamePieces_AddToList()
         {
             //arrange
-            Player a = new Player(Color.red);
+            Player a = new Player(Color.red, "Per");
 
             //act
-            a.InitializePlayer(a.Color);
 
             //assert
             Assert.Equal(4, a.GamePieces.Count);

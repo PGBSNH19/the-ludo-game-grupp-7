@@ -6,34 +6,22 @@ namespace LudoGameEngine
 {
     public class Player
     {
-        public Color Color { get; set; }
+        public Color Color { get; }
+        public string Name { get; }
+        public int Turn = 0;
         public int Score { get; set; }
 
         public List<GamePiece> GamePieces = new List<GamePiece>();
 
-        public Player(Color _color)
+        public Player(Color color, string name)
         {
-            Color = _color;
+            Color = color;
+            Name = name;
             Score = 0;
-        }
-
-        public List<GamePiece> GenerateGamePieces()
-        {
-            for (int i = 1; i < 5; i++)
-            {
-                GamePieces.Add(new GamePiece{ GamePieceID = i, IsSelected = false, PositionID = 0 });
-            }
-
-            return GamePieces;
-
-        }
-
-        public Player InitializePlayer(Color _color)
-        {
-            Player player = new Player(_color);
-            player.GamePieces = GenerateGamePieces();
-
-            return this;
+            GamePieces.Add(new GamePiece());
+            GamePieces.Add(new GamePiece());
+            GamePieces.Add(new GamePiece());
+            GamePieces.Add(new GamePiece());
         }
     }
 }

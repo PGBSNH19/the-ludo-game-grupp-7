@@ -6,10 +6,28 @@ namespace LudoGameEngine
 {
     public class GameEngine
     {
-        public int PlayerScore { get; set; }
-        public int Dice { get; set; }
+        private int turn = 0;
+        private List<Player> players = new List<Player>();
 
+        public void AddPlayer(string name)
+        {
+            if (players.Count == 0)
+                players.Add(new Player(Color.red, name));
 
+            else if (players.Count == 1)
+                players.Add(new Player(Color.blue, name));
+
+            else if (players.Count == 2)
+                players.Add(new Player(Color.yellow, name));
+
+            else if (players.Count == 3)
+                players.Add(new Player(Color.green, name));
+        }
+        public int RollDice()
+        {
+            Random rnd = new Random();
+            return rnd.Next(1, 7);
+        }
 
         public void MoveGamePiece()
         {

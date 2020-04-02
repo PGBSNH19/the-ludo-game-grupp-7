@@ -7,10 +7,8 @@ namespace LudoGameEngine
     public enum PositionType
     {
         StartingPosition,
-        Blue,
-        Red,
-        Green,
-        Yellow,
+        OuterPath,
+        InnerPath,
         FinishPosition
     }
 }
