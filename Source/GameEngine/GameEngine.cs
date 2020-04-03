@@ -140,11 +140,40 @@ namespace LudoGameEngine
         {
 
             gamePiece.position.BoardPosition = gamePiece.position.BoardPosition + dice;
-
+            if (gamePiece.position.BoardPosition > 40)
+            {
+                gamePiece.position.BoardPosition -= 40;
+            }
             gamePiece.StepCounter = gamePiece.StepCounter + dice;
             gamePiece = StepCounter(gamePiece, dice);
 
             return gamePiece;
+        }
+
+        public void CheckGamePieceCollision(int currentPosition, GamePiece ourGamePiece)
+        {
+            
+            foreach (Player player in players)
+            {
+                foreach (GamePiece gamePiece in player.GamePieces)
+                {
+                    if (gamePiece.position.BoardPosition == currentPosition)
+                    {
+                        var gamePieceOnPosition = gamePiece;
+
+                        if (gamePieceOnPosition != ourGamePiece)
+                        {
+                            PushGamePiece(gamePieceOnPosition);
+                        }
+                    }
+
+                }
+            }
+        }
+
+        public void PushGamePiece(GamePiece gamePiece)
+        {
+            gamePiece.position.positionType = PositionType.StartingPosition;
         }
 
         public GamePiece StepCounter(GamePiece gamePiece, int dice)

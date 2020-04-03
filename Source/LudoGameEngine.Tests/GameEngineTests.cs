@@ -85,6 +85,23 @@ namespace LudoGameEngine.Tests
 
         }
 
+
+        [Fact]
+        public void MoveGamePiece_PositionBeyondFourty_ResetBoardPosition()
+        {
+            //arrange
+            GameEngine gameEngine = new GameEngine();
+            Player player = new Player(Color.Green, "Lasse");
+            player.GamePieces[0].position.positionType = PositionType.OuterPath;
+            player.GamePieces[0].position.BoardPosition = 39;
+            var dice = 6;
+
+            //act
+            gameEngine.MoveGamePiece(player.GamePieces[0], dice);
+
+            //assert
+            Assert.Equal(5, player.GamePieces[0].position.BoardPosition);
+        }
         //[Fact]
         //public void SelectGamePiece_LetPlayerDecidePiece_SelectedPieceReturned()
         //{
