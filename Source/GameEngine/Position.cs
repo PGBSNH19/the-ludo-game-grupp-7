@@ -8,5 +8,6 @@ namespace LudoGameEngine
     {
         public PositionType positionType;
         public int BoardPosition { get; set; }
+        public bool Occupied { get; set; }
     }
 }
