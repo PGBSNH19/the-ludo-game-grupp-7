@@ -48,7 +48,7 @@ namespace LudoGameEngine.Tests
 
 
         [Fact]
-        public void ChooseStartingPlayer_PopulatePlayerOrderList_Sucess ()
+        public void ChooseStartingPlayer_PopulatePlayerOrderList_Sucess()
         {
             //arrange
             GameEngine gameEngine = new GameEngine();
@@ -68,13 +68,30 @@ namespace LudoGameEngine.Tests
             Assert.True(expectedList.SequenceEqual(gameEngine.playerOrder));
         }
 
+        [Fact]
+        public void SetOuterPathStart_SetValidStartPosition()
+        {
+            //arrange
+            GameEngine gameEngine = new GameEngine();
+
+
+            //act
+            gameEngine.AddPlayer("Ralph");
+            gameEngine.AddPlayer("Dolph Lundgren");
+
+            //assert
+            Assert.Equal(1, gameEngine.players[0].GamePieces[0].position.BoardPosition);
+            Assert.Equal(11, gameEngine.players[1].GamePieces[0].position.BoardPosition);
+
+        }
+
         //[Fact]
         //public void SelectGamePiece_LetPlayerDecidePiece_SelectedPieceReturned()
         //{
         //    //arrange
         //    GameEngine gameEngine = new GameEngine();
         //    Player player = new Player(Color.Blue, "Nisse");
-            
+
         //    //act
         //    gameEngine.SelectGamePiece(player);
 
