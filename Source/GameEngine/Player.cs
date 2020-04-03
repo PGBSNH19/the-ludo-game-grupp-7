@@ -20,10 +20,10 @@ namespace LudoGameEngine
             Color = color;
             Name = name;
             Score = 0;
-            GamePieces.Add(new GamePiece() { position = new Position() { BoardPosition = 0, positionType = PositionType.StartingPosition } });
-            GamePieces.Add(new GamePiece() { position = new Position() { BoardPosition = 0, positionType = PositionType.StartingPosition } });
-            GamePieces.Add(new GamePiece() { position = new Position() { BoardPosition = 0, positionType = PositionType.StartingPosition } });
-            GamePieces.Add(new GamePiece() { position = new Position() { BoardPosition = 0, positionType = PositionType.StartingPosition } });
+            GamePieces.Add(new GamePiece() { GamePieceID = 1,  position = new Position() { BoardPosition = 0, positionType = PositionType.StartingPosition } });
+            GamePieces.Add(new GamePiece() { GamePieceID = 2, position = new Position() { BoardPosition = 0, positionType = PositionType.StartingPosition } });
+            GamePieces.Add(new GamePiece() { GamePieceID = 3, position = new Position() { BoardPosition = 0, positionType = PositionType.StartingPosition } });
+            GamePieces.Add(new GamePiece() { GamePieceID = 4, position = new Position() { BoardPosition = 0, positionType = PositionType.StartingPosition } });
         }
     }
 }

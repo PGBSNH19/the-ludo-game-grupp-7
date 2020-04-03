@@ -8,5 +8,6 @@ namespace LudoGameEngine
     {
         public Position position { get; set; }
         public int StepCounter { get; set; }
+        public int GamePieceID { get; set; }
     }
 }
