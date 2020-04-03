@@ -10,8 +10,6 @@ Spenderade eftermiddagen med att planera hur vi ska lägga upp projektet.
 
  
 
- 
-
 **2020-04-01**
 
 Börjat med att vi har skapat metoden för att rulla tärningen, och även skapat ett test för metoden.
@@ -47,3 +45,15 @@ Vi behöver hitta ett bättre sätt för att kunna lägga till poäng till spela
 [Vi funderar på hur testbar denna koden är, kan komma att ändras i framtiden.]
 Jobbat med klassen som kommer att visa menyn, skapat en lobbymetod för att kunna välja hur många spelare som ska vara med att spela.
 I lobbymetoden skapar vi även en en ny instans av spelet. 
+
+
+
+**2020-04-03**
+
+- Skapat ett test för att kolla ordningen på spelare. 
+- Skrivit en metod som låter spelaren välja en av sina pjäser att flytta.
+- Lade till ett ID i GamePiece klassen för att göra koden lite mer hållbar och lättare kunna hålla koll på GamePieces.
+- Skapat en metod för att sätta startingposition för varje spelpjäs, och även skapat ett test för denna metoden.
+- Fixat till metoden MoveGamePiece, så att spelbrädan inte är oändlig. Alltså kommer en GamePiece till position 40 och slår 4 så fortsätter den inte till 44 utan hamnar på position 4.
+- Skapade test för "knuff"-funktionen och sedan själva funktionen. Alltså hamnar GamePiece på en position där det redan står en gamepiece, så knuffas denne tillbakat till dennes bo/ startposition. 
+

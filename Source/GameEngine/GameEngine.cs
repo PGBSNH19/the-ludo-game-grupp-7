@@ -100,6 +100,7 @@ namespace LudoGameEngine
 
             var selectedPiece = SelectGamePiece(player, dice);
 
+            MoveGamePiece(selectedPiece, dice);
         }
 
         public GamePiece SelectGamePiece(Player player, int dice)
@@ -136,7 +137,7 @@ namespace LudoGameEngine
             return rnd.Next(1, 7);
         }
 
-        public GamePiece MoveGamePiece(GamePiece gamePiece, int dice)
+        public void MoveGamePiece(GamePiece gamePiece, int dice)
         {
 
             gamePiece.position.BoardPosition = gamePiece.position.BoardPosition + dice;
@@ -147,7 +148,8 @@ namespace LudoGameEngine
             gamePiece.StepCounter = gamePiece.StepCounter + dice;
             gamePiece = StepCounter(gamePiece, dice);
 
-            return gamePiece;
+            CheckGamePieceCollision(gamePiece.position.BoardPosition, gamePiece);
+
         }
 
         public void CheckGamePieceCollision(int currentPosition, GamePiece ourGamePiece)
@@ -163,17 +165,33 @@ namespace LudoGameEngine
 
                         if (gamePieceOnPosition != ourGamePiece)
                         {
-                            PushGamePiece(gamePieceOnPosition);
+                            PushGamePiece(gamePieceOnPosition, player);
                         }
                     }
-
                 }
             }
         }
 
-        public void PushGamePiece(GamePiece gamePiece)
+        public void PushGamePiece(GamePiece gamePiece, Player player)
         {
             gamePiece.position.positionType = PositionType.StartingPosition;
+
+            if (player.Color == Color.Red)
+            {
+                gamePiece.position.BoardPosition = 1;
+            }
+            else if (player.Color == Color.Blue)
+            {
+                gamePiece.position.BoardPosition = 11;
+            }
+            else if (player.Color == Color.Yellow)
+            {
+                gamePiece.position.BoardPosition = 21;
+            }
+            else if (player.Color == Color.Green)
+            {
+                gamePiece.position.BoardPosition = 31;
+            }
         }
 
         public GamePiece StepCounter(GamePiece gamePiece, int dice)

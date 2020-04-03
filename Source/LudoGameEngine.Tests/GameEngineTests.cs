@@ -102,6 +102,27 @@ namespace LudoGameEngine.Tests
             //assert
             Assert.Equal(5, player.GamePieces[0].position.BoardPosition);
         }
+
+        [Fact]
+        public void PushGamePiece_MoveOccupiedPostionPiece_CurrentGamePieceAloneOnPosition()
+        {
+            //arrange
+            GameEngine gameEngine = new GameEngine();
+            gameEngine.players.Add(new Player(Color.Blue ,"Kålle"));
+            gameEngine.players.Add(new Player(Color.Green ,"Ada"));
+            gameEngine.players[0].GamePieces[0].position.positionType = PositionType.OuterPath;
+            gameEngine.players[0].GamePieces[0].position.BoardPosition = 38;
+            gameEngine.players[1].GamePieces[0].position.positionType = PositionType.OuterPath;
+            gameEngine.players[1].GamePieces[0].position.BoardPosition = 39;
+            var dice = 1;
+            //act
+            gameEngine.MoveGamePiece(gameEngine.players[0].GamePieces[0], dice);
+
+            //assert
+            Assert.Equal(31, gameEngine.players[1].GamePieces[0].position.BoardPosition);
+        }
+
+
         //[Fact]
         //public void SelectGamePiece_LetPlayerDecidePiece_SelectedPieceReturned()
         //{
