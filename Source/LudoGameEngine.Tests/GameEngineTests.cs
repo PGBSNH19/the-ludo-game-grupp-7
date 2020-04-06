@@ -114,12 +114,31 @@ namespace LudoGameEngine.Tests
             gameEngine.players[0].GamePieces[0].position.BoardPosition = 38;
             gameEngine.players[1].GamePieces[0].position.positionType = PositionType.OuterPath;
             gameEngine.players[1].GamePieces[0].position.BoardPosition = 39;
-            var dice = 1;
+
             //act
-            gameEngine.MoveGamePiece(gameEngine.players[0].GamePieces[0], dice);
+            gameEngine.MoveGamePiece(gameEngine.players[0].GamePieces[0], 1);
 
             //assert
             Assert.Equal(31, gameEngine.players[1].GamePieces[0].position.BoardPosition);
+            Assert.NotEqual(39, gameEngine.players[1].GamePieces[0].position.BoardPosition);
+        }
+
+        [Fact]
+        public void PushGamePiece_TwoSameColoredPiecesOnSamePosition_NoPush()
+        {
+            //arrange
+            GameEngine gameEngine = new GameEngine();
+            gameEngine.players.Add(new Player(Color.Red, "Nils"));
+            gameEngine.players[0].GamePieces[0].position.positionType = PositionType.OuterPath;
+            gameEngine.players[0].GamePieces[0].position.BoardPosition = 38;
+            gameEngine.players[0].GamePieces[1].position.positionType = PositionType.OuterPath;
+            gameEngine.players[0].GamePieces[1].position.BoardPosition = 37;
+
+            //act
+            gameEngine.MoveGamePiece(gameEngine.players[0].GamePieces[1], 1);
+
+            //assert
+            Assert.Equal(38, gameEngine.players[0].GamePieces[1].position.BoardPosition);
         }
 
 
