@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Threading;
 
 namespace LudoGameEngine
 {
@@ -94,9 +95,11 @@ namespace LudoGameEngine
 
         public void PlayerTurn(Player player)
         {
-            Console.WriteLine($"{player.Name}! Press any key to roll the dice!");
+            Console.WriteLine($"{player.Name}, press any key to roll the dice.");
             Console.ReadKey();
             var dice = RollDice();
+            Console.WriteLine($"The dice rolled {dice}.");
+            Thread.Sleep(500);
 
             var selectedPiece = SelectGamePiece(player, dice);
 
@@ -122,10 +125,19 @@ namespace LudoGameEngine
 
             var selectedGamePiece = player.GamePieces.Where(x => x.GamePieceID == selectedGamePieceID).FirstOrDefault();
 
+            //byt ut till en switch
             if (selectedGamePiece.position.positionType == PositionType.StartingPosition && dice == 6 || dice == 1)
             {
-                MoveGamePieceToBoard(player, selectedGamePiece, dice);
+                MoveGamePieceToBoard(selectedGamePiece, dice);
             }
+
+            if (selectedGamePiece.position.positionType == PositionType.OuterPath)
+            {
+                MoveGamePiece(selectedGamePiece, dice);
+            }
+
+
+
             return selectedGamePiece;
         }
 
@@ -139,6 +151,10 @@ namespace LudoGameEngine
 
         public void MoveGamePiece(GamePiece gamePiece, int dice)
         {
+            if (gamePiece.position.positionType == PositionType.StartingPosition)
+            {
+                
+            }
 
             gamePiece.position.BoardPosition = gamePiece.position.BoardPosition + dice;
             if (gamePiece.position.BoardPosition > 40)
@@ -240,11 +256,10 @@ namespace LudoGameEngine
             }
         }
 
-        public void MoveGamePieceToBoard(Player player, GamePiece gp, int dice)
+        public void MoveGamePieceToBoard(GamePiece gp, int dice)
         {
             gp.position.positionType = PositionType.OuterPath;
             MoveGamePiece(gp, dice);
-
         }
 
 

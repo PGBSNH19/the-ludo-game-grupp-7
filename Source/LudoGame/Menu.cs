@@ -66,13 +66,23 @@ namespace LudoGame
         {
             Console.WriteLine("How many players?");
             int playerAmount = int.Parse(Console.ReadLine());
+            
+            while (playerAmount < 2 || playerAmount > 4)
+            {
+                Console.WriteLine("You have to be at least 2 players and maximum 4 players.");
+                Console.WriteLine("How many players?");
+                playerAmount = int.Parse(Console.ReadLine());
+            }
+
             for (int i = 0; i < playerAmount; i++)
             {
                 Console.WriteLine($"{Enum.GetName(typeof(Color), i)} player, choose your name: ");
                 var name = Console.ReadLine();
                 GameEngine.AddPlayer(name);
             }
-            Console.WriteLine("All players are reday, press any key to start game");
+
+
+            Console.WriteLine("All players are ready, press any key to start game");
             Console.ReadKey();
             GameEngine.StartNewGame();
 
