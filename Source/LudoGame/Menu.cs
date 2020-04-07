@@ -171,14 +171,11 @@ namespace LudoGame
                 GameEngine.MoveGamePiece(selectedGamePiece, dice, player);
             }
 
-            //check if player won with loop of players and their score
-            if (player.Score == 4)
-            {
+            player = GameEngine.CheckWin(player);
+            if (player != null)
                 return player;
-            }
 
-
-            Console.WriteLine($"Your piece is now at: {selectedGamePiece.position.BoardPosition} on the {selectedGamePiece.position.positionType}" +
+            Console.WriteLine($"Your piece is now at position: {selectedGamePiece.position.BoardPosition} on the {selectedGamePiece.position.positionType}" +
                 $" and has taken: {selectedGamePiece.StepCounter} steps");
 
             return null;

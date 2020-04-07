@@ -194,11 +194,12 @@ namespace LudoGameEngine.Tests
             gameEngine.players[0].Score = 3;
 
             //act
-            gameEngine.MoveGamePiece(gameEngine.players[0].GamePieces[0], 3,gameEngine.players[0]);
+            gameEngine.MoveGamePiece(gameEngine.players[0].GamePieces[0], 3, gameEngine.players[0]);
+            var winnerPlayer = gameEngine.CheckWin(gameEngine.players[0]);
 
             //assert
             Assert.Equal(4, gameEngine.players[0].Score);
-            //Assert.Equal(menu.)
+            Assert.Equal(winnerPlayer, gameEngine.players[0]);
 
         }
 

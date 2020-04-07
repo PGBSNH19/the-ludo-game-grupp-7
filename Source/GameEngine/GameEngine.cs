@@ -218,5 +218,12 @@ namespace LudoGameEngine
             MoveGamePiece(gp, dice, player);
         }
 
+        public Player CheckWin(Player player)
+        {
+            if (player.Score == 4)
+                return player;
+            else
+                return null;
+        }
     }
 }
