@@ -1,7 +1,9 @@
 ﻿using LudoGameEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace LudoGame
 {
@@ -84,10 +86,61 @@ namespace LudoGame
 
             Console.WriteLine("All players are ready, press any key to start game");
             Console.ReadKey();
-            GameEngine.StartNewGame();
+            var playerOrder = GameEngine.ChooseStartingPlayer();
+            Console.WriteLine($"{playerOrder[0].Name} rolled the highest and is the starting player!");
 
+            GameRun(playerOrder);
+
+            Console.WriteLine("Game done!");
+        }
+        private void GameRun(List<Player> playerOrder)
+        {
+            Player winPlayer = null;
+            while (winPlayer == null)
+            {
+                for (int i = 0; i < playerOrder.Count; i++)
+                {
+                    winPlayer = PlayerTurn(playerOrder[i]);
+                    if (winPlayer != null)
+                        break;
+                }
+            }
+            Console.WriteLine("Congratulations");
         }
 
+        public Player PlayerTurn(Player player)
+        {
+            Console.WriteLine($"{player.Name}, press any key to roll the dice.");
+            Console.ReadKey();
+            var dice = GameEngine.RollDice();
+            Console.WriteLine($"The dice rolled {dice}.");
+            Thread.Sleep(500);
+
+            var validToMovePieces = GameEngine.GetValidPiecesToMove(player, dice);
+            foreach (var gp in validToMovePieces)
+            {
+                Console.WriteLine($"GamePiece nr: {gp.GamePieceID} is at boardposition:" +
+                    $" {gp.position.positionType} and is at {gp.position.BoardPosition}");
+            }
+            var selectedGamePieceID = int.Parse(Console.ReadLine());
+
+            var selectedGamePiece = validToMovePieces.Where(x => x.GamePieceID == selectedGamePieceID).FirstOrDefault();
+
+            if (selectedGamePiece.position.positionType == PositionType.StartingPosition)
+            {
+                GameEngine.MoveGamePieceToBoard(selectedGamePiece, dice);
+            }
+            else
+            {
+                GameEngine.MoveGamePiece(selectedGamePiece, dice);
+            }
+
+            //check if player won
+
+            Console.WriteLine($"Your piece is now at: ");
+
+            return null;
+        }
 
     }
 }

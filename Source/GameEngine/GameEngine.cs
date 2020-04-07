@@ -79,67 +79,28 @@ namespace LudoGameEngine
 
         }
 
-        public void StartNewGame()
+        public List<GamePiece> GetValidPiecesToMove(Player player, int dice)
         {
-            ChooseStartingPlayer();
+            List<GamePiece> validToMovePieces = new List<GamePiece>();
 
-            while (true)
+
+            if (dice == 1 || dice == 6)
             {
-                for (int i = 0; i < playerOrder.Count; i++)
-                {
-                    PlayerTurn(playerOrder[i]);
-                }
+
+                validToMovePieces.AddRange(player.GamePieces);
 
             }
+            else
+            {
+                validToMovePieces.AddRange(player.GamePieces.Where(x => x.position.positionType != PositionType.StartingPosition &&
+                                                                    x.position.positionType != PositionType.FinishPosition).ToList());
+            }
+
+            return validToMovePieces;
+
         }
 
-        public void PlayerTurn(Player player)
-        {
-            Console.WriteLine($"{player.Name}, press any key to roll the dice.");
-            Console.ReadKey();
-            var dice = RollDice();
-            Console.WriteLine($"The dice rolled {dice}.");
-            Thread.Sleep(500);
-
-            var selectedPiece = SelectGamePiece(player, dice);
-
-            MoveGamePiece(selectedPiece, dice);
-        }
-
-        public GamePiece SelectGamePiece(Player player, int dice)
-        {
-
-
-            Console.WriteLine("Choose the gamepiece you want to move: ");
-
-            for (int i = 0; i < player.GamePieces.Count; i++)
-            {
-                var gamePieceID = player.GamePieces[i].GamePieceID;
-                var postition = player.GamePieces[i].position.BoardPosition;
-                var positionType = player.GamePieces[i].position.positionType;
-                Console.WriteLine($"GamePiece nr: {gamePieceID} at boardposition{positionType} {postition}");
-
-            }
-
-            var selectedGamePieceID = int.Parse(Console.ReadLine());
-
-            var selectedGamePiece = player.GamePieces.Where(x => x.GamePieceID == selectedGamePieceID).FirstOrDefault();
-
-            //byt ut till en switch
-            if (selectedGamePiece.position.positionType == PositionType.StartingPosition && dice == 6 || dice == 1)
-            {
-                MoveGamePieceToBoard(selectedGamePiece, dice);
-            }
-
-            if (selectedGamePiece.position.positionType == PositionType.OuterPath)
-            {
-                MoveGamePiece(selectedGamePiece, dice);
-            }
-
-
-
-            return selectedGamePiece;
-        }
+       
 
 
 
@@ -151,10 +112,6 @@ namespace LudoGameEngine
 
         public void MoveGamePiece(GamePiece gamePiece, int dice)
         {
-            if (gamePiece.position.positionType == PositionType.StartingPosition)
-            {
-                
-            }
 
             gamePiece.position.BoardPosition = gamePiece.position.BoardPosition + dice;
             if (gamePiece.position.BoardPosition > 40)
@@ -239,7 +196,7 @@ namespace LudoGameEngine
         }
 
 
-        public void ChooseStartingPlayer()
+        public List<Player> ChooseStartingPlayer()
         {
             var dice = 0;
             while (players.Count != playerOrder.Count)
@@ -248,12 +205,12 @@ namespace LudoGameEngine
                 {
                     dice = RollDice();
                     player.StartingDice = dice;
-                    Console.WriteLine($"{player.Name} rolled {dice}.");
+                    //Console.WriteLine($"{player.Name} rolled {dice}.");
                 }
 
                 playerOrder = players.OrderByDescending(p => p.StartingDice).ToList();
-                Console.WriteLine($"{playerOrder[0].Name} is the starting player!");
             }
+            return playerOrder;
         }
 
         public void MoveGamePieceToBoard(GamePiece gp, int dice)
