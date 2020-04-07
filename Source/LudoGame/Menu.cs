@@ -66,9 +66,22 @@ namespace LudoGame
         }
         public void StartLobby()
         {
-            Console.WriteLine("How many players?");
-            int playerAmount = int.Parse(Console.ReadLine());
             
+
+            TryPlayerAmountInputAgain:
+
+            Console.WriteLine("Type in how many players and press enter");
+
+            int playerAmount;
+            bool succeeded;
+            succeeded = int.TryParse(Console.ReadLine(), out playerAmount);
+
+            if (succeeded == false)
+            {
+                Console.WriteLine("Your input was not correct, please try again");
+                goto TryPlayerAmountInputAgain;
+            }
+
             while (playerAmount < 2 || playerAmount > 4)
             {
                 Console.WriteLine("You have to be at least 2 players and maximum 4 players.");
@@ -105,7 +118,7 @@ namespace LudoGame
                         break;
                 }
             }
-            Console.WriteLine("Congratulations");
+            Console.WriteLine($"Congratulations, {winPlayer.Name}! You won!");
         }
 
         public Player PlayerTurn(Player player)
@@ -122,25 +135,79 @@ namespace LudoGame
                 Console.WriteLine($"GamePiece nr: {gp.GamePieceID} is at boardposition:" +
                     $" {gp.position.positionType} and is at {gp.position.BoardPosition}");
             }
-            var selectedGamePieceID = int.Parse(Console.ReadLine());
 
-            var selectedGamePiece = validToMovePieces.Where(x => x.GamePieceID == selectedGamePieceID).FirstOrDefault();
+            if (validToMovePieces.Count == 0)
+            {
+                Console.WriteLine("Sorry, you have no valid gamepieces to move, try again next turn");
+                return null;
+            }
+
+            
+            TryInputAgain:
+            Console.WriteLine("Type in GamePiece number and press enter");
+
+            int selectedGamePieceID;
+            bool succeeded;
+            succeeded = int.TryParse(Console.ReadLine(), out selectedGamePieceID);
+            
+            if (succeeded == false)
+            {
+                Console.WriteLine("Your input was not correct, please try again");
+                goto TryInputAgain;   
+            }
+
+            GamePiece selectedGamePiece = null;
+
+            for (int i = 0; i < validToMovePieces.Count +1 ; i++)
+            {
+                try
+                {
+                if(selectedGamePieceID == validToMovePieces[i].GamePieceID)
+                {
+                    selectedGamePiece = validToMovePieces.Where(x => x.GamePieceID == selectedGamePieceID).FirstOrDefault();
+                    break;
+                }      
+
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("That gamepiece does not exist or is not valid to move right now");
+                    goto TryInputAgain;
+                }
+            }
+            
+            
+            
 
             if (selectedGamePiece.position.positionType == PositionType.StartingPosition)
             {
-                GameEngine.MoveGamePieceToBoard(selectedGamePiece, dice);
+                GameEngine.MoveGamePieceToBoard(selectedGamePiece, dice, player);
             }
             else
             {
-                GameEngine.MoveGamePiece(selectedGamePiece, dice);
+                GameEngine.MoveGamePiece(selectedGamePiece, dice, player);
             }
 
-            //check if player won
+            //check if player won with loop of players and their score
+            if (player.Score == 4)
+            {
+                return player;
+            }
 
-            Console.WriteLine($"Your piece is now at: ");
+
+            Console.WriteLine($"Your piece is now at: {selectedGamePiece.position.BoardPosition} on the {selectedGamePiece.position.positionType}" +
+                $" and has taken: {selectedGamePiece.StepCounter} steps");
 
             return null;
         }
 
+        public bool CheckUserInput(string input)
+        {
+            bool result;
+            var charInput = Convert.ToChar(input);
+            result = Char.IsDigit(charInput);
+
+            return result;
+        }
     }
 }

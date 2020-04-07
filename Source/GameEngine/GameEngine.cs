@@ -48,7 +48,7 @@ namespace LudoGameEngine
             {
                 foreach (var gp in player.GamePieces)
                 {
-                    gp.position.BoardPosition = 1;
+                    gp.position.BoardPosition = 0;
 
                 }
             }
@@ -56,7 +56,7 @@ namespace LudoGameEngine
             {
                 foreach (var gp in player.GamePieces)
                 {
-                    gp.position.BoardPosition = 11;
+                    gp.position.BoardPosition = 10;
 
                 }
             }
@@ -64,7 +64,7 @@ namespace LudoGameEngine
             {
                 foreach (var gp in player.GamePieces)
                 {
-                    gp.position.BoardPosition = 21;
+                    gp.position.BoardPosition = 20;
 
                 }
             }
@@ -72,7 +72,7 @@ namespace LudoGameEngine
             {
                 foreach (var gp in player.GamePieces)
                 {
-                    gp.position.BoardPosition = 31;
+                    gp.position.BoardPosition = 30;
 
                 }
             }
@@ -101,28 +101,42 @@ namespace LudoGameEngine
         }
 
        
-
-
-
         public int RollDice()
         {
             Random rnd = new Random();
             return rnd.Next(1, 7);
         }
 
-        public void MoveGamePiece(GamePiece gamePiece, int dice)
+        public void MoveGamePiece(GamePiece gamePiece, int dice, Player player)
         {
 
-            gamePiece.position.BoardPosition = gamePiece.position.BoardPosition + dice;
+            gamePiece.position.BoardPosition += dice;
+
             if (gamePiece.position.BoardPosition > 40)
             {
                 gamePiece.position.BoardPosition -= 40;
             }
-            gamePiece.StepCounter = gamePiece.StepCounter + dice;
-            gamePiece = StepCounter(gamePiece, dice);
 
+            gamePiece.StepCounter += dice;
+            gamePiece = MoveGamePieceToInnerPath(gamePiece);
+
+            if (gamePiece.position.positionType == PositionType.InnerPath)
+            {
+                if (gamePiece.StepCounter > 5)
+                {
+                    gamePiece.StepCounter -= 5;
+                }
+                else if (gamePiece.StepCounter == 5)
+                {
+                    gamePiece.position.positionType = PositionType.FinishPosition;
+                    player.Score += 1;
+                }
+                else
+                {
+                    gamePiece.StepCounter += dice;
+                }
+            }
             CheckGamePieceCollision(gamePiece.position.BoardPosition, gamePiece);
-
         }
 
         public void CheckGamePieceCollision(int currentPosition, GamePiece ourGamePiece)
@@ -151,23 +165,23 @@ namespace LudoGameEngine
 
             if (player.Color == Color.Red)
             {
-                gamePiece.position.BoardPosition = 1;
+                gamePiece.position.BoardPosition = 0;
             }
             else if (player.Color == Color.Blue)
             {
-                gamePiece.position.BoardPosition = 11;
+                gamePiece.position.BoardPosition = 10;
             }
             else if (player.Color == Color.Yellow)
             {
-                gamePiece.position.BoardPosition = 21;
+                gamePiece.position.BoardPosition = 20;
             }
             else if (player.Color == Color.Green)
             {
-                gamePiece.position.BoardPosition = 31;
+                gamePiece.position.BoardPosition = 30;
             }
         }
 
-        public GamePiece StepCounter(GamePiece gamePiece, int dice)
+        public GamePiece MoveGamePieceToInnerPath(GamePiece gamePiece)
         {
             if (gamePiece.StepCounter >= 40)
             {
@@ -175,21 +189,10 @@ namespace LudoGameEngine
 
                 var innerPathSteps = gamePiece.StepCounter - 40;
 
-                gamePiece.StepCounter = gamePiece.StepCounter + innerPathSteps;
-                gamePiece.position.BoardPosition = gamePiece.position.BoardPosition = innerPathSteps;
+                gamePiece.StepCounter += innerPathSteps;
+                gamePiece.position.BoardPosition = innerPathSteps;
 
-                if (gamePiece.StepCounter > 5)
-                {
-                    gamePiece.StepCounter -= 5;
-                }
-                else if (gamePiece.StepCounter == 5)
-                {
-                    players[0].Score += 1;
-                }
-                else
-                {
-                    gamePiece.StepCounter += dice;
-                }
+               
 
             }
             return gamePiece;
@@ -213,12 +216,11 @@ namespace LudoGameEngine
             return playerOrder;
         }
 
-        public void MoveGamePieceToBoard(GamePiece gp, int dice)
+        public void MoveGamePieceToBoard(GamePiece gp, int dice, Player player)
         {
             gp.position.positionType = PositionType.OuterPath;
-            MoveGamePiece(gp, dice);
+            MoveGamePiece(gp, dice, player);
         }
-
 
     }
 }
