@@ -57,3 +57,21 @@ I lobbymetoden skapar vi även en en ny instans av spelet.
 - Fixat till metoden MoveGamePiece, så att spelbrädan inte är oändlig. Alltså kommer en GamePiece till position 40 och slår 4 så fortsätter den inte till 44 utan hamnar på position 4.
 - Skapade test för "knuff"-funktionen och sedan själva funktionen. Alltså hamnar GamePiece på en position där det redan står en gamepiece, så knuffas denne tillbakat till dennes bo/ startposition. 
 
+
+
+**2020-04-06** 
+
+- Arbetat med metoder för att kunna flytta ut pjäser och att man inte får flytta ut pjäser om man inte slagit 1 eller 6.
+-  Psuedo-kod:  dice roll if dice roll mellan 1 & 6 {du kan flytta alla pjäser position.boardposition.start && position.boardposition.outerpath && position.boardposition.innerpath} if dice mellan 2 & 5 {du kan flytta på pjäser som är på spelplan position.boardposition.outerpath && position.boardposition.innerpath}  
+
+ **2020-04-07**
+
+- Vi har refaktureat en hel del av koden som låg i GameEngine, eftersom en hel del inputs och outputs låg där i. 
+- Vi löste även problemet med att en spelare ska kunna välja vilken pjäs som helst när tärningen slår 1 eller 6.
+-  Ändrat om så att spelplanen börjar på 0 istället för 1 för att slippa vissa onödiga uträkningar. Jobbat på metoden som håller koll på ifall en spelare går i mål eller inte, och var koden hör hemma.
+- Lagt till logik som håller koll på hur många poäng en spelare har.
+-  Börjat med felhantering för user input som ser till att input är korrekt, men vi använder förtillfället samma kod på flera ställen. Eventuellt bör det vara en metod som kollar user-input. 
+-    Skapat ett test som testar ifall pjäserna kan flytta in på InnerPath. 
+- Skapade en metod som ser till att det användaren matar in är korrekt (CheckUserInput).
+- Vi har ändrat på metoden som räknar ut ifall en spelpjäs går i mål eller inte, och skapat ett test för ifall en pjäs måste gå förbi mål.
+

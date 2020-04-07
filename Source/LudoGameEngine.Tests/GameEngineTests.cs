@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Xunit;
 using LudoGameEngine;
 using System.Linq;
+using LudoGame;
 
 namespace LudoGameEngine.Tests
 {
@@ -164,8 +165,40 @@ namespace LudoGameEngine.Tests
         }
 
         [Fact]
-        public void kjsdf()
+        public void InnerPathMove_MoveToFar_GamePieceStepBack()
         {
+            //arrange
+            GameEngine gameEngine = new GameEngine();
+            gameEngine.players.Add(new Player(Color.Red, "Nils"));
+            gameEngine.players[0].GamePieces[0].position.positionType = PositionType.InnerPath;
+            gameEngine.players[0].GamePieces[0].position.BoardPosition = 2;
+            gameEngine.players[0].GamePieces[0].StepCounter = 2;
+
+            //act
+            gameEngine.MoveGamePiece(gameEngine.players[0].GamePieces[0], 4, gameEngine.players[0]);
+
+            //assert
+            Assert.Equal(4, gameEngine.players[0].GamePieces[0].position.BoardPosition);
+        }
+
+        [Fact]
+        public void MoveLastPeiceToFinishPosition_PlayerScore4Points_PlayerWins()
+        {
+            //arrange
+            GameEngine gameEngine = new GameEngine();
+            Menu menu = new Menu();
+            gameEngine.players.Add(new Player(Color.Red, "Nils"));
+            gameEngine.players[0].GamePieces[0].position.positionType = PositionType.InnerPath;
+            gameEngine.players[0].GamePieces[0].position.BoardPosition = 2;
+            gameEngine.players[0].GamePieces[0].StepCounter = 2;
+            gameEngine.players[0].Score = 3;
+
+            //act
+            gameEngine.MoveGamePiece(gameEngine.players[0].GamePieces[0], 3,gameEngine.players[0]);
+
+            //assert
+            Assert.Equal(4, gameEngine.players[0].Score);
+            //Assert.Equal(menu.)
 
         }
 

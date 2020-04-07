@@ -124,7 +124,10 @@ namespace LudoGameEngine
             {
                 if (gamePiece.StepCounter > 5)
                 {
-                    gamePiece.StepCounter -= 5;
+                    int result = gamePiece.StepCounter - 5;
+                    result = 5 - result;
+                    gamePiece.StepCounter = result;
+                    gamePiece.position.BoardPosition = result;
                 }
                 else if (gamePiece.StepCounter == 5)
                 {
