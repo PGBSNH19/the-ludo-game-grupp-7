@@ -202,7 +202,31 @@ namespace LudoGameEngine.Tests
             Assert.Equal(winnerPlayer, gameEngine.players[0]);
 
         }
+        [Fact]
+        public void MoveGamePiece_AfterPieceGetsToFinish_PieceGetsRemoved()
+        {
+            //arrange
+            GameEngine gameEngine = new GameEngine();
+            Menu menu = new Menu();
+            gameEngine.players.Add(new Player(Color.Red, "Nils"));
+            gameEngine.players[0].GamePieces[0].position.positionType = PositionType.InnerPath;
+            gameEngine.players[0].GamePieces[0].position.BoardPosition = 2;
+            gameEngine.players[0].GamePieces[0].StepCounter = 2;
+            gameEngine.players[0].GamePieces[1].position.positionType = PositionType.InnerPath;
+            gameEngine.players[0].GamePieces[1].position.BoardPosition = 1;
+            gameEngine.players[0].GamePieces[2].position.positionType = PositionType.OuterPath;
+            gameEngine.players[0].GamePieces[2].position.BoardPosition = 2;
+            gameEngine.players[0].GamePieces[3].position.positionType = PositionType.StartingPosition;
+            gameEngine.players[0].GamePieces[3].position.BoardPosition = 1;
 
+            //act
+            gameEngine.MoveGamePiece(gameEngine.players[0].GamePieces[0], 3, gameEngine.players[0]);
+            var validpiecestomove = gameEngine.GetValidPiecesToMove(gameEngine.players[0], 1);
+
+            //assert
+            Assert.Equal(PositionType.FinishPosition, gameEngine.players[0].GamePieces[0].position.positionType);
+            Assert.Equal(3, validpiecestomove.Count);
+        }
 
         //[Fact]
         //public void SelectGamePiece_LetPlayerDecidePiece_SelectedPieceReturned()

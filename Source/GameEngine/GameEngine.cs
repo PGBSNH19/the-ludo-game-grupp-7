@@ -87,7 +87,7 @@ namespace LudoGameEngine
             if (dice == 1 || dice == 6)
             {
 
-                validToMovePieces.AddRange(player.GamePieces);
+                validToMovePieces.AddRange(player.GamePieces.Where(x => x.position.positionType != PositionType.FinishPosition).ToList());
 
             }
             else
