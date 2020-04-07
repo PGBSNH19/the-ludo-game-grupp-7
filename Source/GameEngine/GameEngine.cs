@@ -131,10 +131,6 @@ namespace LudoGameEngine
                     gamePiece.position.positionType = PositionType.FinishPosition;
                     player.Score += 1;
                 }
-                else
-                {
-                    gamePiece.StepCounter += dice;
-                }
             }
             CheckGamePieceCollision(gamePiece.position.BoardPosition, gamePiece);
         }
@@ -187,12 +183,9 @@ namespace LudoGameEngine
             {
                 gamePiece.position.positionType = PositionType.InnerPath;
 
-                var innerPathSteps = gamePiece.StepCounter - 40;
+                gamePiece.StepCounter = gamePiece.StepCounter - 40;
 
-                gamePiece.StepCounter += innerPathSteps;
-                gamePiece.position.BoardPosition = innerPathSteps;
-
-               
+                gamePiece.position.BoardPosition = gamePiece.StepCounter;
 
             }
             return gamePiece;

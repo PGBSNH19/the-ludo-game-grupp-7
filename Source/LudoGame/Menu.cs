@@ -66,27 +66,18 @@ namespace LudoGame
         }
         public void StartLobby()
         {
-            
-
-            TryPlayerAmountInputAgain:
 
             Console.WriteLine("Type in how many players and press enter");
 
-            int playerAmount;
-            bool succeeded;
-            succeeded = int.TryParse(Console.ReadLine(), out playerAmount);
-
-            if (succeeded == false)
-            {
-                Console.WriteLine("Your input was not correct, please try again");
-                goto TryPlayerAmountInputAgain;
-            }
+            string userInput = Console.ReadLine();
+            int playerAmount = CheckUserInput(userInput);
 
             while (playerAmount < 2 || playerAmount > 4)
             {
                 Console.WriteLine("You have to be at least 2 players and maximum 4 players.");
                 Console.WriteLine("How many players?");
-                playerAmount = int.Parse(Console.ReadLine());
+                userInput = Console.ReadLine();
+                playerAmount = CheckUserInput(userInput);
             }
 
             for (int i = 0; i < playerAmount; i++)
@@ -142,42 +133,34 @@ namespace LudoGame
                 return null;
             }
 
-            
-            TryInputAgain:
+
+            TryAgain:
             Console.WriteLine("Type in GamePiece number and press enter");
 
             int selectedGamePieceID;
-            bool succeeded;
-            succeeded = int.TryParse(Console.ReadLine(), out selectedGamePieceID);
-            
-            if (succeeded == false)
-            {
-                Console.WriteLine("Your input was not correct, please try again");
-                goto TryInputAgain;   
-            }
+            string userInput = Console.ReadLine();
+            selectedGamePieceID = CheckUserInput(userInput);
 
             GamePiece selectedGamePiece = null;
 
-            for (int i = 0; i < validToMovePieces.Count +1 ; i++)
+            for (int i = 0; i < validToMovePieces.Count + 1; i++)
             {
                 try
                 {
-                if(selectedGamePieceID == validToMovePieces[i].GamePieceID)
-                {
-                    selectedGamePiece = validToMovePieces.Where(x => x.GamePieceID == selectedGamePieceID).FirstOrDefault();
-                    break;
-                }      
+                    if (selectedGamePieceID == validToMovePieces[i].GamePieceID)
+                    {
+                        selectedGamePiece = validToMovePieces.Where(x => x.GamePieceID == selectedGamePieceID).FirstOrDefault();
+                        break;
+                    }
 
                 }
                 catch (Exception)
                 {
                     Console.WriteLine("That gamepiece does not exist or is not valid to move right now");
-                    goto TryInputAgain;
+                    goto TryAgain;
                 }
             }
-            
-            
-            
+
 
             if (selectedGamePiece.position.positionType == PositionType.StartingPosition)
             {
@@ -201,13 +184,17 @@ namespace LudoGame
             return null;
         }
 
-        public bool CheckUserInput(string input)
-        {
-            bool result;
-            var charInput = Convert.ToChar(input);
-            result = Char.IsDigit(charInput);
 
-            return result;
+        public static int CheckUserInput(string input)
+        {
+            int output;
+
+            while (!int.TryParse(input, out output))
+            {
+                Console.WriteLine("Please enter a number.");
+                input = Console.ReadLine();
+            }
+            return output;
         }
     }
 }
