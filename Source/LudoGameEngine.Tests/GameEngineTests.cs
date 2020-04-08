@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Xunit;
 using LudoGameEngine;
 using System.Linq;
+using LudoGame;
 
 namespace LudoGameEngine.Tests
 {
@@ -80,8 +81,8 @@ namespace LudoGameEngine.Tests
             gameEngine.AddPlayer("Dolph Lundgren");
 
             //assert
-            Assert.Equal(1, gameEngine.players[0].GamePieces[0].position.BoardPosition);
-            Assert.Equal(11, gameEngine.players[1].GamePieces[0].position.BoardPosition);
+            Assert.Equal(0, gameEngine.players[0].GamePieces[0].position.BoardPosition);
+            Assert.Equal(10, gameEngine.players[1].GamePieces[0].position.BoardPosition);
 
         }
 
@@ -97,14 +98,14 @@ namespace LudoGameEngine.Tests
             var dice = 6;
 
             //act
-            gameEngine.MoveGamePiece(player.GamePieces[0], dice);
+            gameEngine.MoveGamePiece(player.GamePieces[0], dice, player);
 
             //assert
             Assert.Equal(5, player.GamePieces[0].position.BoardPosition);
         }
 
         [Fact]
-        public void PushGamePiece_MoveOccupiedPostionPiece_CurrentGamePieceAloneOnPosition()
+        public void PushGamePiece_GamePiecesOnSamePosition_GamePieceGetsRepositionedToStartingPosition()
         {
             //arrange
             GameEngine gameEngine = new GameEngine();
@@ -114,14 +115,118 @@ namespace LudoGameEngine.Tests
             gameEngine.players[0].GamePieces[0].position.BoardPosition = 38;
             gameEngine.players[1].GamePieces[0].position.positionType = PositionType.OuterPath;
             gameEngine.players[1].GamePieces[0].position.BoardPosition = 39;
-            var dice = 1;
+
             //act
-            gameEngine.MoveGamePiece(gameEngine.players[0].GamePieces[0], dice);
+            gameEngine.MoveGamePiece(gameEngine.players[0].GamePieces[0], 1, gameEngine.players[0]);
 
             //assert
-            Assert.Equal(31, gameEngine.players[1].GamePieces[0].position.BoardPosition);
+            Assert.Equal(30, gameEngine.players[1].GamePieces[0].position.BoardPosition);
+            Assert.NotEqual(39, gameEngine.players[1].GamePieces[0].position.BoardPosition);
         }
 
+        [Fact]
+        public void PushGamePiece_TwoSameColoredPiecesOnSamePosition_NoPush()
+        {
+            
+            //arrange
+            GameEngine gameEngine = new GameEngine();
+            gameEngine.players.Add(new Player(Color.Red, "Nils"));
+            gameEngine.players[0].GamePieces[0].position.positionType = PositionType.OuterPath;
+            gameEngine.players[0].GamePieces[0].position.BoardPosition = 38;
+            gameEngine.players[0].GamePieces[1].position.positionType = PositionType.OuterPath;
+            gameEngine.players[0].GamePieces[1].position.BoardPosition = 37;
+
+            //act
+            gameEngine.MoveGamePiece(gameEngine.players[0].GamePieces[1], 1, gameEngine.players[0]);
+
+            //assert
+            Assert.Equal(38, gameEngine.players[0].GamePieces[1].position.BoardPosition);
+        }
+
+
+        [Fact]
+        public void MoveGamePiece_GamePieceMoves40Steps_GamePieceMovesToInnerPath()
+        {
+            //arrange
+            GameEngine gameEngine = new GameEngine();
+            gameEngine.players.Add(new Player(Color.Red, "Nils"));
+            gameEngine.players[0].GamePieces[0].position.positionType = PositionType.OuterPath;
+            gameEngine.players[0].GamePieces[0].position.BoardPosition = 38;
+            gameEngine.players[0].GamePieces[0].StepCounter = 38;
+
+            //act
+            gameEngine.MoveGamePiece(gameEngine.players[0].GamePieces[0], 4, gameEngine.players[0]);
+
+            //assert
+            Assert.Equal(PositionType.InnerPath, gameEngine.players[0].GamePieces[0].position.positionType);
+            Assert.Equal(2, gameEngine.players[0].GamePieces[0].position.BoardPosition);
+            Assert.Equal(2, gameEngine.players[0].GamePieces[0].StepCounter);
+
+        }
+
+        [Fact]
+        public void InnerPathMove_MoveToFar_GamePieceStepBack()
+        {
+            //arrange
+            GameEngine gameEngine = new GameEngine();
+            gameEngine.players.Add(new Player(Color.Red, "Nils"));
+            gameEngine.players[0].GamePieces[0].position.positionType = PositionType.InnerPath;
+            gameEngine.players[0].GamePieces[0].position.BoardPosition = 2;
+            gameEngine.players[0].GamePieces[0].StepCounter = 2;
+
+            //act
+            gameEngine.MoveGamePiece(gameEngine.players[0].GamePieces[0], 4, gameEngine.players[0]);
+
+            //assert
+            Assert.Equal(4, gameEngine.players[0].GamePieces[0].position.BoardPosition);
+        }
+
+        [Fact]
+        public void MoveLastPeiceToFinishPosition_PlayerScore4Points_PlayerWins()
+        {
+            //arrange
+            GameEngine gameEngine = new GameEngine();
+            Menu menu = new Menu();
+            gameEngine.players.Add(new Player(Color.Red, "Nils"));
+            gameEngine.players[0].GamePieces[0].position.positionType = PositionType.InnerPath;
+            gameEngine.players[0].GamePieces[0].position.BoardPosition = 2;
+            gameEngine.players[0].GamePieces[0].StepCounter = 2;
+            gameEngine.players[0].Score = 3;
+
+            //act
+            gameEngine.MoveGamePiece(gameEngine.players[0].GamePieces[0], 3, gameEngine.players[0]);
+            var winnerPlayer = gameEngine.CheckWin(gameEngine.players[0]);
+
+            //assert
+            Assert.Equal(4, gameEngine.players[0].Score);
+            Assert.Equal(winnerPlayer, gameEngine.players[0]);
+
+        }
+        [Fact]
+        public void MoveGamePiece_AfterPieceGetsToFinish_PieceGetsRemoved()
+        {
+            //arrange
+            GameEngine gameEngine = new GameEngine();
+            Menu menu = new Menu();
+            gameEngine.players.Add(new Player(Color.Red, "Nils"));
+            gameEngine.players[0].GamePieces[0].position.positionType = PositionType.InnerPath;
+            gameEngine.players[0].GamePieces[0].position.BoardPosition = 2;
+            gameEngine.players[0].GamePieces[0].StepCounter = 2;
+            gameEngine.players[0].GamePieces[1].position.positionType = PositionType.InnerPath;
+            gameEngine.players[0].GamePieces[1].position.BoardPosition = 1;
+            gameEngine.players[0].GamePieces[2].position.positionType = PositionType.OuterPath;
+            gameEngine.players[0].GamePieces[2].position.BoardPosition = 2;
+            gameEngine.players[0].GamePieces[3].position.positionType = PositionType.StartingPosition;
+            gameEngine.players[0].GamePieces[3].position.BoardPosition = 1;
+
+            //act
+            gameEngine.MoveGamePiece(gameEngine.players[0].GamePieces[0], 3, gameEngine.players[0]);
+            var validpiecestomove = gameEngine.GetValidPiecesToMove(gameEngine.players[0], 1);
+
+            //assert
+            Assert.Equal(PositionType.FinishPosition, gameEngine.players[0].GamePieces[0].position.positionType);
+            Assert.Equal(3, validpiecestomove.Count);
+        }
 
         //[Fact]
         //public void SelectGamePiece_LetPlayerDecidePiece_SelectedPieceReturned()

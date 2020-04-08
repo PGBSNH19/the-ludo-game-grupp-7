@@ -1,7 +1,9 @@
 ﻿using LudoGameEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace LudoGame
 {
@@ -64,20 +66,132 @@ namespace LudoGame
         }
         public void StartLobby()
         {
-            Console.WriteLine("How many players?");
-            int playerAmount = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Type in how many players and press enter");
+
+            string userInput = Console.ReadLine();
+            int playerAmount = CheckUserInput(userInput);
+
+            while (playerAmount < 2 || playerAmount > 4)
+            {
+                Console.WriteLine("You have to be at least 2 players and maximum 4 players.");
+                Console.WriteLine("How many players?");
+                userInput = Console.ReadLine();
+                playerAmount = CheckUserInput(userInput);
+            }
+
             for (int i = 0; i < playerAmount; i++)
             {
                 Console.WriteLine($"{Enum.GetName(typeof(Color), i)} player, choose your name: ");
                 var name = Console.ReadLine();
                 GameEngine.AddPlayer(name);
             }
-            Console.WriteLine("All players are reday, press any key to start game");
-            Console.ReadKey();
-            GameEngine.StartNewGame();
 
+
+            Console.WriteLine("All players are ready, press any key to start game");
+            Console.ReadKey();
+            var playerOrder = GameEngine.ChooseStartingPlayer();
+            Console.WriteLine($"{playerOrder[0].Name} rolled the highest and is the starting player!");
+
+            GameRun(playerOrder);
+
+            Console.WriteLine("Game done!");
+        }
+        private void GameRun(List<Player> playerOrder)
+        {
+            Player winPlayer = null;
+            while (winPlayer == null)
+            {
+                for (int i = 0; i < playerOrder.Count; i++)
+                {
+                    winPlayer = PlayerTurn(playerOrder[i]);
+                    if (winPlayer != null)
+                        break;
+                }
+            }
+            Console.WriteLine($"Congratulations, {winPlayer.Name}! You won!");
+        }
+
+        public Player PlayerTurn(Player player)
+        {
+            Console.WriteLine($"{player.Name}, press any key to roll the dice.");
+            Console.ReadKey();
+            var dice = GameEngine.RollDice();
+            Console.WriteLine($"The dice rolled {dice}.");
+            Thread.Sleep(500);
+
+            var validToMovePieces = GameEngine.GetValidPiecesToMove(player, dice);
+            foreach (var gp in validToMovePieces)
+            {
+                Console.WriteLine($"GamePiece nr: {gp.GamePieceID} is at boardposition:" +
+                    $" {gp.position.positionType} and is at {gp.position.BoardPosition}");
+            }
+
+            if (validToMovePieces.Count == 0)
+            {
+                Console.WriteLine("Sorry, you have no valid gamepieces to move, try again next turn");
+                return null;
+            }
+
+
+            TryAgain:
+            Console.WriteLine("Type in GamePiece number and press enter");
+
+            int selectedGamePieceID;
+            string userInput = Console.ReadLine();
+            selectedGamePieceID = CheckUserInput(userInput);
+
+            GamePiece selectedGamePiece = null;
+
+            for (int i = 0; i < validToMovePieces.Count + 1; i++)
+            {
+                try
+                {
+                    if (selectedGamePieceID == validToMovePieces[i].GamePieceID)
+                    {
+                        selectedGamePiece = validToMovePieces.Where(x => x.GamePieceID == selectedGamePieceID).FirstOrDefault();
+                        break;
+                    }
+
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("That gamepiece does not exist or is not valid to move right now");
+                    goto TryAgain;
+                }
+            }
+
+
+            if (selectedGamePiece.position.positionType == PositionType.StartingPosition)
+            {
+                GameEngine.MoveGamePieceToBoard(selectedGamePiece, dice, player);
+            }
+            else
+            {
+                GameEngine.MoveGamePiece(selectedGamePiece, dice, player);
+            }
+
+            player = GameEngine.CheckWin(player);
+            if (player != null)
+                return player;
+
+            Console.WriteLine($"Your piece is now at position: {selectedGamePiece.position.BoardPosition} on the {selectedGamePiece.position.positionType}" +
+                $" and has taken: {selectedGamePiece.StepCounter} steps");
+
+            return null;
         }
 
 
+        public static int CheckUserInput(string input)
+        {
+            int output;
+
+            while (!int.TryParse(input, out output))
+            {
+                Console.WriteLine("Please enter a number.");
+                input = Console.ReadLine();
+            }
+            return output;
+        }
     }
 }

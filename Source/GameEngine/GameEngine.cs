@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Threading;
 
 namespace LudoGameEngine
 {
@@ -47,7 +48,7 @@ namespace LudoGameEngine
             {
                 foreach (var gp in player.GamePieces)
                 {
-                    gp.position.BoardPosition = 1;
+                    gp.position.BoardPosition = 0;
 
                 }
             }
@@ -55,7 +56,7 @@ namespace LudoGameEngine
             {
                 foreach (var gp in player.GamePieces)
                 {
-                    gp.position.BoardPosition = 11;
+                    gp.position.BoardPosition = 10;
 
                 }
             }
@@ -63,7 +64,7 @@ namespace LudoGameEngine
             {
                 foreach (var gp in player.GamePieces)
                 {
-                    gp.position.BoardPosition = 21;
+                    gp.position.BoardPosition = 20;
 
                 }
             }
@@ -71,85 +72,70 @@ namespace LudoGameEngine
             {
                 foreach (var gp in player.GamePieces)
                 {
-                    gp.position.BoardPosition = 31;
+                    gp.position.BoardPosition = 30;
 
                 }
             }
 
         }
 
-        public void StartNewGame()
+        public List<GamePiece> GetValidPiecesToMove(Player player, int dice)
         {
-            ChooseStartingPlayer();
+            List<GamePiece> validToMovePieces = new List<GamePiece>();
 
-            while (true)
+
+            if (dice == 1 || dice == 6)
             {
-                for (int i = 0; i < playerOrder.Count; i++)
-                {
-                    PlayerTurn(playerOrder[i]);
-                }
+
+                validToMovePieces.AddRange(player.GamePieces.Where(x => x.position.positionType != PositionType.FinishPosition).ToList());
 
             }
-        }
-
-        public void PlayerTurn(Player player)
-        {
-            Console.WriteLine($"{player.Name}! Press any key to roll the dice!");
-            Console.ReadKey();
-            var dice = RollDice();
-
-            var selectedPiece = SelectGamePiece(player, dice);
-
-            MoveGamePiece(selectedPiece, dice);
-        }
-
-        public GamePiece SelectGamePiece(Player player, int dice)
-        {
-
-
-            Console.WriteLine("Choose the gamepiece you want to move: ");
-
-            for (int i = 0; i < player.GamePieces.Count; i++)
+            else
             {
-                var gamePieceID = player.GamePieces[i].GamePieceID;
-                var postition = player.GamePieces[i].position.BoardPosition;
-                var positionType = player.GamePieces[i].position.positionType;
-                Console.WriteLine($"GamePiece nr: {gamePieceID} at boardposition{positionType} {postition}");
-
+                validToMovePieces.AddRange(player.GamePieces.Where(x => x.position.positionType != PositionType.StartingPosition &&
+                                                                    x.position.positionType != PositionType.FinishPosition).ToList());
             }
 
-            var selectedGamePieceID = int.Parse(Console.ReadLine());
+            return validToMovePieces;
 
-            var selectedGamePiece = player.GamePieces.Where(x => x.GamePieceID == selectedGamePieceID).FirstOrDefault();
-
-            if (selectedGamePiece.position.positionType == PositionType.StartingPosition && dice == 6 || dice == 1)
-            {
-                MoveGamePieceToBoard(player, selectedGamePiece, dice);
-            }
-            return selectedGamePiece;
         }
 
-
-
+       
         public int RollDice()
         {
             Random rnd = new Random();
             return rnd.Next(1, 7);
         }
 
-        public void MoveGamePiece(GamePiece gamePiece, int dice)
+        public void MoveGamePiece(GamePiece gamePiece, int dice, Player player)
         {
 
-            gamePiece.position.BoardPosition = gamePiece.position.BoardPosition + dice;
+            gamePiece.position.BoardPosition += dice;
+
             if (gamePiece.position.BoardPosition > 40)
             {
                 gamePiece.position.BoardPosition -= 40;
             }
-            gamePiece.StepCounter = gamePiece.StepCounter + dice;
-            gamePiece = StepCounter(gamePiece, dice);
 
+            gamePiece.StepCounter += dice;
+            gamePiece = MoveGamePieceToInnerPath(gamePiece);
+
+            if (gamePiece.position.positionType == PositionType.InnerPath)
+            {
+                if (gamePiece.StepCounter > 5)
+                {
+                    int result = gamePiece.StepCounter - 5;
+                    result = 5 - result;
+                    gamePiece.StepCounter = result;
+                    gamePiece.position.BoardPosition = result;
+                }
+                else if (gamePiece.StepCounter == 5)
+                {
+                    gamePiece.position.positionType = PositionType.FinishPosition;
+                    player.Score += 1;
+                }
+            }
             CheckGamePieceCollision(gamePiece.position.BoardPosition, gamePiece);
-
         }
 
         public void CheckGamePieceCollision(int currentPosition, GamePiece ourGamePiece)
@@ -178,52 +164,38 @@ namespace LudoGameEngine
 
             if (player.Color == Color.Red)
             {
-                gamePiece.position.BoardPosition = 1;
+                gamePiece.position.BoardPosition = 0;
             }
             else if (player.Color == Color.Blue)
             {
-                gamePiece.position.BoardPosition = 11;
+                gamePiece.position.BoardPosition = 10;
             }
             else if (player.Color == Color.Yellow)
             {
-                gamePiece.position.BoardPosition = 21;
+                gamePiece.position.BoardPosition = 20;
             }
             else if (player.Color == Color.Green)
             {
-                gamePiece.position.BoardPosition = 31;
+                gamePiece.position.BoardPosition = 30;
             }
         }
 
-        public GamePiece StepCounter(GamePiece gamePiece, int dice)
+        public GamePiece MoveGamePieceToInnerPath(GamePiece gamePiece)
         {
             if (gamePiece.StepCounter >= 40)
             {
                 gamePiece.position.positionType = PositionType.InnerPath;
 
-                var innerPathSteps = gamePiece.StepCounter - 40;
+                gamePiece.StepCounter = gamePiece.StepCounter - 40;
 
-                gamePiece.StepCounter = gamePiece.StepCounter + innerPathSteps;
-                gamePiece.position.BoardPosition = gamePiece.position.BoardPosition = innerPathSteps;
-
-                if (gamePiece.StepCounter > 5)
-                {
-                    gamePiece.StepCounter -= 5;
-                }
-                else if (gamePiece.StepCounter == 5)
-                {
-                    players[0].Score += 1;
-                }
-                else
-                {
-                    gamePiece.StepCounter += dice;
-                }
+                gamePiece.position.BoardPosition = gamePiece.StepCounter;
 
             }
             return gamePiece;
         }
 
 
-        public void ChooseStartingPlayer()
+        public List<Player> ChooseStartingPlayer()
         {
             var dice = 0;
             while (players.Count != playerOrder.Count)
@@ -232,21 +204,26 @@ namespace LudoGameEngine
                 {
                     dice = RollDice();
                     player.StartingDice = dice;
-                    Console.WriteLine($"{player.Name} rolled {dice}.");
+                    //Console.WriteLine($"{player.Name} rolled {dice}.");
                 }
 
                 playerOrder = players.OrderByDescending(p => p.StartingDice).ToList();
-                Console.WriteLine($"{playerOrder[0].Name} is the starting player!");
             }
+            return playerOrder;
         }
 
-        public void MoveGamePieceToBoard(Player player, GamePiece gp, int dice)
+        public void MoveGamePieceToBoard(GamePiece gp, int dice, Player player)
         {
             gp.position.positionType = PositionType.OuterPath;
-            MoveGamePiece(gp, dice);
-
+            MoveGamePiece(gp, dice, player);
         }
 
-
+        public Player CheckWin(Player player)
+        {
+            if (player.Score == 4)
+                return player;
+            else
+                return null;
+        }
     }
 }
