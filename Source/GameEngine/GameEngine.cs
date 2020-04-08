@@ -204,7 +204,6 @@ namespace LudoGameEngine
                 {
                     dice = RollDice();
                     player.StartingDice = dice;
-                    //Console.WriteLine($"{player.Name} rolled {dice}.");
                 }
 
                 playerOrder = players.OrderByDescending(p => p.StartingDice).ToList();

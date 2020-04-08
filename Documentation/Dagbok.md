@@ -79,3 +79,6 @@ I lobbymetoden skapar vi även en en ny instans av spelet.
  **2020-04-08**
 
 - Fixade så att en pjäs inte blir tillänglig för att flyttas efter att den har kommit till finishposition och lade till test för detta.
+- Skapat en CheckWin-metod i GameEngine istället för att ha den i menyn, och även skapat ett test för den.
+-  Snyggat till lite i utskrifterna. 
+- Börjat lägga grund för databas, en DbContext klass.

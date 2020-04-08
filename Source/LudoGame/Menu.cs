@@ -123,13 +123,13 @@ namespace LudoGame
             var validToMovePieces = GameEngine.GetValidPiecesToMove(player, dice);
             foreach (var gp in validToMovePieces)
             {
-                Console.WriteLine($"GamePiece nr: {gp.GamePieceID} is at boardposition:" +
-                    $" {gp.position.positionType} and is at {gp.position.BoardPosition}");
+                Console.WriteLine($"GamePiece nr: {gp.GamePieceID} is on the" +
+                    $" {gp.position.positionType} at position: {gp.position.BoardPosition} and has taken {gp.StepCounter} steps");
             }
 
             if (validToMovePieces.Count == 0)
             {
-                Console.WriteLine("Sorry, you have no valid gamepieces to move, try again next turn");
+                Console.WriteLine("Sorry, you have no valid gamepieces to move, try again next turn \n");
                 return null;
             }
 
@@ -156,7 +156,7 @@ namespace LudoGame
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("That gamepiece does not exist or is not valid to move right now");
+                    Console.WriteLine("That gamepiece does not exist or is not valid to move right now \n");
                     goto TryAgain;
                 }
             }
@@ -176,7 +176,8 @@ namespace LudoGame
                 return player;
 
             Console.WriteLine($"Your piece is now at position: {selectedGamePiece.position.BoardPosition} on the {selectedGamePiece.position.positionType}" +
-                $" and has taken: {selectedGamePiece.StepCounter} steps");
+                $" and has taken: {selectedGamePiece.StepCounter} steps \n");
+            
 
             return null;
         }

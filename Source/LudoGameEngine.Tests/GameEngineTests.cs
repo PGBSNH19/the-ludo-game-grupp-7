@@ -25,7 +25,7 @@ namespace LudoGameEngine.Tests
         public void Dice_RollDice_ValidInt_Ture_IntBtw1and6()
         {
             //arrange
-            Game dice = new Game();
+            GameEngine dice = new GameEngine();
             var die = dice.RollDice();
             //act
             //Assert
