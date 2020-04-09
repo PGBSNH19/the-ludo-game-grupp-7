@@ -82,3 +82,16 @@ I lobbymetoden skapar vi även en en ny instans av spelet.
 - Skapat en CheckWin-metod i GameEngine istället för att ha den i menyn, och även skapat ett test för den.
 -  Snyggat till lite i utskrifterna. 
 - Börjat lägga grund för databas, en DbContext klass.
+
+
+
+**2020-04-09** 
+
+Idag så designade vi databas-strukturen, och såg att vi var tvugna att byta ut en hel del grejer i projektet. Vi behövde ändra en hel del props i bl.a. GamePiece, Player och Game, som kommer vara våra tables i databasen.  
+
+- Vi flyttade på players listan till Game så att man ska kunna skriva och läsa in spelare ifrån pågående spel ifrån databasen.
+- Vi har skapat de constraints för databasen som vi ansåg automappades fel i våran ModelBuilder.
+- Vi tog bort klassen Position och lade till de props som behövdes därifrån i GamePiece. 
+- Börjat med att lägga in metoder för att plocka ur data ur databasen. Vi har fått migrations att funka. I och med de ändringarna vi gjorde idag fick vi lägga en hel del tid på att refakturera kod.
+
+   

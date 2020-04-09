@@ -124,7 +124,7 @@ namespace LudoGame
             foreach (var gp in validToMovePieces)
             {
                 Console.WriteLine($"GamePiece nr: {gp.GamePieceID} is on the" +
-                    $" {gp.position.positionType} at position: {gp.position.BoardPosition} and has taken {gp.StepCounter} steps");
+                    $" {gp.positionType} at position: {gp.BoardPosition} and has taken {gp.StepCounter} steps");
             }
 
             if (validToMovePieces.Count == 0)
@@ -162,7 +162,7 @@ namespace LudoGame
             }
 
 
-            if (selectedGamePiece.position.positionType == PositionType.StartingPosition)
+            if (selectedGamePiece.positionType == PositionType.StartingPosition)
             {
                 GameEngine.MoveGamePieceToBoard(selectedGamePiece, dice, player);
             }
@@ -175,7 +175,7 @@ namespace LudoGame
             if (player != null)
                 return player;
 
-            Console.WriteLine($"Your piece is now at position: {selectedGamePiece.position.BoardPosition} on the {selectedGamePiece.position.positionType}" +
+            Console.WriteLine($"Your piece is now at position: {selectedGamePiece.BoardPosition} on the {selectedGamePiece.positionType}" +
                 $" and has taken: {selectedGamePiece.StepCounter} steps \n");
             
 

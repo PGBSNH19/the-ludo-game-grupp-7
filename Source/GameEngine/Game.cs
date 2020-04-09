@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LudoGameEngine
 {
     public class Game
     {
         public int GameID { get; set; }
-        public Player Winner { get; set; }
-        public DateTime TimeOfGame { get; set; }
-
+        public int? WinnerPlayerID { get; set; }
+        public DateTime EndTimeOfGame { get; set; }
+        public int? NextPlayerID { get; set; }
+        public List<Player> Players { get; set; }
     }
 }

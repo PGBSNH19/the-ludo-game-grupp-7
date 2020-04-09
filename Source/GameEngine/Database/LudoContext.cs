@@ -4,19 +4,21 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LudoGameEngine.Database
 {
-    public class DataContext : DbContext
+    public class LudoContext : DbContext
     {
-        public DbSet<Player> Player { get; set; }
         public DbSet<Game> Game { get; set; }
-        public DbSet<Session> Session { get; set; }
+        public DbSet<Player> Player { get; set; }
+        public DbSet<GamePiece> GamePiece { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             IConfiguration config = new ConfigurationBuilder()
-                .AddJsonFile("AppSettings.Json")
+                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile($"appsettings.dev.json", true, true)
                 .Build();
 
             var defaultConnection = config.GetConnectionString("DefaultConnection");
@@ -24,29 +26,32 @@ namespace LudoGameEngine.Database
             optionsBuilder.UseSqlServer(defaultConnection);
         }
 
-        //protected override void OnModelCreating(ModelBuilder Builder)
-        //{
-        //    Builder.Entity<PlayerSession>().HasKey(c => new { c.SessionId, c.PlayerId });
-        //    Builder.Entity<PlayerSession>()
-        //        .HasOne<Player>(c => c.PlayerRef)
-        //        .WithMany(s => s.PlayerSession)
-        //        .HasForeignKey(x => x.PlayerId);
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            var converter = new ValueConverter<Color, string>(
+             v => v.ToString(),
+             v => (Color)Enum.Parse(typeof(Color), v));
 
-        //    Builder.Entity<PlayerSession>()
-        //        .HasOne<Session>(x => x.SessionRef)
-        //        .WithMany(c => c.PlayerPiece)
-        //        .HasForeignKey(x => x.SessionId);
+            builder.Entity<Player>()
+                .Property(x => x.Name)
+                .HasMaxLength(50);
 
-        //    Builder.Entity<PlayerPiece>().HasKey(c => new { c.PlayerId, c.PieceId });
-        //    Builder.Entity<PlayerPiece>()
-        //        .HasOne<Player>(c => c.PlayerRef)
-        //        .WithMany(c => c.PlayerPiece)
-        //        .HasForeignKey(x => x.PlayerId);
+            builder.Entity<Player>()
+                 .Property(x => x.Color)
+                 .HasConversion(converter);
 
-        //    Builder.Entity<PlayerPiece>()
-        //        .HasOne<Piece>(c => c.PieceRef)
-        //        .WithMany(c => c.PlayerPiece)
-        //        .HasForeignKey(x => x.PieceId);
-        //}
+            builder.Entity<Player>()
+                .Property(x => x.PlayerID)
+                .ValueGeneratedNever();
+
+            builder.Entity<Game>()
+                .Property(x => x.GameID)
+                .ValueGeneratedNever();
+
+            builder.Entity<GamePiece>()
+                .Property(x => x.GamePieceID)
+                .ValueGeneratedNever();
+
+        }
     }
 }
