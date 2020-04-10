@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LudoGameEngine.Migrations
 {
     [DbContext(typeof(LudoContext))]
-    [Migration("20200410080302_Initial")]
+    [Migration("20200410101008_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,9 @@ namespace LudoGameEngine.Migrations
             modelBuilder.Entity("LudoGameEngine.Game", b =>
                 {
                     b.Property<int>("GameID")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("EndTimeOfGame")
                         .HasColumnType("datetime2");
@@ -32,8 +34,8 @@ namespace LudoGameEngine.Migrations
                     b.Property<int?>("NextPlayerID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("WinnerPlayerID")
-                        .HasColumnType("int");
+                    b.Property<string>("WinnerPlayerName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("GameID");
 
@@ -43,9 +45,14 @@ namespace LudoGameEngine.Migrations
             modelBuilder.Entity("LudoGameEngine.GamePiece", b =>
                 {
                     b.Property<int>("GamePieceID")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BoardPosition")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayerGamePiece")
                         .HasColumnType("int");
 
                     b.Property<int>("PlayerID")
@@ -85,8 +92,6 @@ namespace LudoGameEngine.Migrations
 
                     b.HasKey("PlayerID");
 
-                    b.HasIndex("GameID");
-
                     b.ToTable("Player");
                 });
 
@@ -95,15 +100,6 @@ namespace LudoGameEngine.Migrations
                     b.HasOne("LudoGameEngine.Player", "Player")
                         .WithMany()
                         .HasForeignKey("PlayerID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("LudoGameEngine.Player", b =>
-                {
-                    b.HasOne("LudoGameEngine.Game", null)
-                        .WithMany("Players")
-                        .HasForeignKey("GameID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

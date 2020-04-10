@@ -22,10 +22,10 @@ namespace LudoGameEngine
             Color = color;
             Name = name;
             Score = 0;
-            GamePieces.Add(new GamePiece() { GamePieceID = 1, positionType = PositionType.StartingPosition });
-            GamePieces.Add(new GamePiece() { GamePieceID = 2, positionType = PositionType.StartingPosition });
-            GamePieces.Add(new GamePiece() { GamePieceID = 3, positionType = PositionType.StartingPosition });
-            GamePieces.Add(new GamePiece() { GamePieceID = 4, positionType = PositionType.StartingPosition });
+            GamePieces.Add(new GamePiece() { PlayerGamePiece = 1, positionType = PositionType.StartingPosition });
+            GamePieces.Add(new GamePiece() { PlayerGamePiece = 2, positionType = PositionType.StartingPosition });
+            GamePieces.Add(new GamePiece() { PlayerGamePiece = 3, positionType = PositionType.StartingPosition });
+            GamePieces.Add(new GamePiece() { PlayerGamePiece = 4, positionType = PositionType.StartingPosition });
         }
         public Player()
         {

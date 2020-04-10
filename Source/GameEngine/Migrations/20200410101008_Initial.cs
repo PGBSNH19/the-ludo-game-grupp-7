@@ -11,8 +11,9 @@ namespace LudoGameEngine.Migrations
                 name: "Game",
                 columns: table => new
                 {
-                    GameID = table.Column<int>(nullable: false),
-                    WinnerPlayerID = table.Column<int>(nullable: true),
+                    GameID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    WinnerPlayerName = table.Column<string>(nullable: true),
                     EndTimeOfGame = table.Column<DateTime>(nullable: false),
                     NextPlayerID = table.Column<int>(nullable: true)
                 },
@@ -34,19 +35,15 @@ namespace LudoGameEngine.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Player", x => x.PlayerID);
-                    table.ForeignKey(
-                        name: "FK_Player_Game_GameID",
-                        column: x => x.GameID,
-                        principalTable: "Game",
-                        principalColumn: "GameID",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "GamePiece",
                 columns: table => new
                 {
-                    GamePieceID = table.Column<int>(nullable: false),
+                    GamePieceID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PlayerGamePiece = table.Column<int>(nullable: false),
                     StepCounter = table.Column<int>(nullable: false),
                     BoardPosition = table.Column<int>(nullable: false),
                     positionType = table.Column<int>(nullable: false),
@@ -67,23 +64,18 @@ namespace LudoGameEngine.Migrations
                 name: "IX_GamePiece_PlayerID",
                 table: "GamePiece",
                 column: "PlayerID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Player_GameID",
-                table: "Player",
-                column: "GameID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Game");
+
+            migrationBuilder.DropTable(
                 name: "GamePiece");
 
             migrationBuilder.DropTable(
                 name: "Player");
-
-            migrationBuilder.DropTable(
-                name: "Game");
         }
     }
 }

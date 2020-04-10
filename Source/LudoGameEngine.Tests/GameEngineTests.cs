@@ -66,8 +66,8 @@ namespace LudoGameEngine.Tests
             var expectedList = game.Players.OrderByDescending(x => x.StartingDice).ToList();
 
             //assert
-            Assert.NotEqual(game.Players, gameEngine.playerOrder);
-            Assert.True(expectedList.SequenceEqual(gameEngine.playerOrder));
+            Assert.NotEqual(game.Players, gameEngine.PlayerOrder);
+            Assert.True(expectedList.SequenceEqual(gameEngine.PlayerOrder));
         }
 
         [Fact]

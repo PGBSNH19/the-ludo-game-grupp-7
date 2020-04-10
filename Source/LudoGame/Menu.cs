@@ -99,6 +99,7 @@ namespace LudoGame
 
         public void StartLobby()
         {
+            GameEngine.CreateNewGame();
             Console.WriteLine("Type in how many players and press enter");
 
             string userInput = Console.ReadLine();
@@ -155,7 +156,7 @@ namespace LudoGame
             var validToMovePieces = GameEngine.GetValidPiecesToMove(player, dice);
             foreach (var gp in validToMovePieces)
             {
-                Console.WriteLine($"GamePiece nr: {gp.GamePieceID} is on the" +
+                Console.WriteLine($"GamePiece nr: {gp.PlayerGamePiece} is on the" +
                     $" {gp.positionType} at position: {gp.BoardPosition} and has taken {gp.StepCounter} steps");
             }
 
@@ -169,9 +170,9 @@ namespace LudoGame
         TryAgain:
             Console.WriteLine("Type in GamePiece number and press enter");
 
-            int selectedGamePieceID;
+            int selectedPlayerGamePiece;
             string userInput = Console.ReadLine();
-            selectedGamePieceID = CheckUserInput(userInput);
+            selectedPlayerGamePiece = CheckUserInput(userInput);
 
             GamePiece selectedGamePiece = null;
 
@@ -179,9 +180,9 @@ namespace LudoGame
             {
                 try
                 {
-                    if (selectedGamePieceID == validToMovePieces[i].GamePieceID)
+                    if (selectedPlayerGamePiece == validToMovePieces[i].PlayerGamePiece)
                     {
-                        selectedGamePiece = validToMovePieces.Where(x => x.GamePieceID == selectedGamePieceID).FirstOrDefault();
+                        selectedGamePiece = validToMovePieces.Where(x => x.PlayerGamePiece == selectedPlayerGamePiece).FirstOrDefault();
                         break;
                     }
 
@@ -211,6 +212,7 @@ namespace LudoGame
                 $" and has taken: {selectedGamePiece.StepCounter} steps \n");
 
 
+            GameEngine.UpdateGame(GameEngine.Game);
             return null;
         }
 

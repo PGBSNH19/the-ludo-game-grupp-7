@@ -17,14 +17,27 @@ namespace LudoGameEngine.Database
            
             Game game = new Game();
             _ludoContext.Game.Add(game);
+            _ludoContext.Player.AddRange(game.Players);
+
+            for (int i = 0; i < game.Players.Count; i++)
+            {
+                _ludoContext.GamePiece.AddRange(game.Players[i].GamePieces);
+            }
             _ludoContext.SaveChanges();
 
             return game;
         }
 
+      
+
         public void UpdateGame(Game game)
         {
             _ludoContext.Game.Update(game);
+            _ludoContext.Player.UpdateRange(game.Players);
+            for (int i = 0; i < game.Players.Count; i++)
+            {
+                _ludoContext.GamePiece.UpdateRange(game.Players[i].GamePieces);
+            }
             _ludoContext.SaveChanges();
         }
 

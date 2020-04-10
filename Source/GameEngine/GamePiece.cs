@@ -7,6 +7,7 @@ namespace LudoGameEngine
     public class GamePiece
     {
         public int GamePieceID { get; set; }
+        public int PlayerGamePiece { get; set; }
         public int StepCounter { get; set; }
         public int BoardPosition { get; set; }
         public PositionType positionType { get; set; }

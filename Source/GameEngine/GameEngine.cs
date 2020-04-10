@@ -26,24 +26,43 @@ namespace LudoGameEngine
             Game = game;
         }
 
-        public void Populate()
+        public void UpdateGame(Game game)
         {
-
+            GameData.UpdateGame(game);
         }
 
+        public void SetGamePiecePlayerID(Player player)
+        {
+            foreach (GamePiece gamePiece in player.GamePieces)
+            {
+                gamePiece.PlayerID = player.PlayerID;
+            }
+        }
         public void AddPlayer(string name)
         {
             if (Game.Players.Count == 0)
-                Game.Players.Add(new Player(Color.Red, name) { });
+            {
+                Game.Players.Add(new Player(Color.Red, name) { PlayerID = 1 });
+                SetGamePiecePlayerID(Game.Players[0]);
+            }
 
             else if (Game.Players.Count == 1)
-                Game.Players.Add(new Player(Color.Blue, name));
+            {
+                Game.Players.Add(new Player(Color.Blue, name) { PlayerID = 2 });
+                SetGamePiecePlayerID(Game.Players[1]);
+            }
 
             else if (Game.Players.Count == 2)
-                Game.Players.Add(new Player(Color.Yellow, name));
+            {
+                Game.Players.Add(new Player(Color.Yellow, name) { PlayerID = 3 });
+                SetGamePiecePlayerID(Game.Players[2]);
+            }
 
             else if (Game.Players.Count == 3)
-                Game.Players.Add(new Player(Color.Green, name));
+            {
+                Game.Players.Add(new Player(Color.Green, name) { PlayerID = 4 });
+                SetGamePiecePlayerID(Game.Players[3]);
+            }
 
             foreach (var player in Game.Players)
             {

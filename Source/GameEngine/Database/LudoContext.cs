@@ -44,9 +44,9 @@ namespace LudoGameEngine.Database
                 .Property(x => x.PlayerID)
                 .ValueGeneratedNever();
 
-            builder.Entity<GamePiece>()
-                .Property(x => x.GamePieceID)
-                .ValueGeneratedNever();
+            //builder.Entity<GamePiece>()
+            //    .Property(x => x.PlayerGamePiece)
+            //    .ValueGeneratedNever();
 
         }
     }
