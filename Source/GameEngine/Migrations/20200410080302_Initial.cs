@@ -22,21 +22,6 @@ namespace LudoGameEngine.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GamePiece",
-                columns: table => new
-                {
-                    GamePieceID = table.Column<int>(nullable: false),
-                    StepCounter = table.Column<int>(nullable: false),
-                    BoardPosition = table.Column<int>(nullable: false),
-                    positionType = table.Column<int>(nullable: false),
-                    PlayerID = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GamePiece", x => x.GamePieceID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Player",
                 columns: table => new
                 {
@@ -56,6 +41,32 @@ namespace LudoGameEngine.Migrations
                         principalColumn: "GameID",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "GamePiece",
+                columns: table => new
+                {
+                    GamePieceID = table.Column<int>(nullable: false),
+                    StepCounter = table.Column<int>(nullable: false),
+                    BoardPosition = table.Column<int>(nullable: false),
+                    positionType = table.Column<int>(nullable: false),
+                    PlayerID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GamePiece", x => x.GamePieceID);
+                    table.ForeignKey(
+                        name: "FK_GamePiece_Player_PlayerID",
+                        column: x => x.PlayerID,
+                        principalTable: "Player",
+                        principalColumn: "PlayerID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GamePiece_PlayerID",
+                table: "GamePiece",
+                column: "PlayerID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Player_GameID",

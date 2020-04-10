@@ -52,7 +52,7 @@ namespace LudoGame
                     break;
 
                 case ConsoleKey.D2:
-                    //GameEngine.LoadGame();
+                    LoadGame();
                     break;
 
                 case ConsoleKey.D3:
@@ -64,9 +64,41 @@ namespace LudoGame
             }
 
         }
+
+        private void LoadGame()
+        {
+            Console.WriteLine("Checking for current game");
+            Thread.Sleep(200);
+            Console.Write(".");
+            Thread.Sleep(200);
+            Console.Write(".");
+            Thread.Sleep(200);
+            Console.Write(".");
+
+            try
+            {
+                GameEngine.LoadGame();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Something went wrong");
+            }
+
+            if (GameEngine.Game != null)
+            {
+                Console.WriteLine("Success");
+            }
+            else
+            {
+                Console.WriteLine("No game found");
+            }
+            GameRun(GameEngine.Game.Players);
+
+            Console.WriteLine("Game done!");
+        }
+
         public void StartLobby()
         {
-
             Console.WriteLine("Type in how many players and press enter");
 
             string userInput = Console.ReadLine();
@@ -134,7 +166,7 @@ namespace LudoGame
             }
 
 
-            TryAgain:
+        TryAgain:
             Console.WriteLine("Type in GamePiece number and press enter");
 
             int selectedGamePieceID;
@@ -177,7 +209,7 @@ namespace LudoGame
 
             Console.WriteLine($"Your piece is now at position: {selectedGamePiece.BoardPosition} on the {selectedGamePiece.positionType}" +
                 $" and has taken: {selectedGamePiece.StepCounter} steps \n");
-            
+
 
             return null;
         }

@@ -3,34 +3,51 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.Threading;
+using LudoGameEngine.Database;
 
 namespace LudoGameEngine
 {
     public class GameEngine
     {
-        Game game = new Game();
+        GameData GameData = new GameData();
+        public Game Game { get; set; }
 
-        public List<Player> playerOrder = new List<Player>();
+        public List<Player> PlayerOrder = new List<Player>();
 
+        public void CreateNewGame()
+        {
+            var game = GameData.NewGame();
+            Game = game;
+        }
+
+        public void LoadGame()
+        {
+            var game = GameData.ContinueCurrentGame();
+            Game = game;
+        }
+
+        public void Populate()
+        {
+
+        }
 
         public void AddPlayer(string name)
         {
-            if (game.Players.Count == 0)
-                game.Players.Add(new Player(Color.Red, name) { });
+            if (Game.Players.Count == 0)
+                Game.Players.Add(new Player(Color.Red, name) { });
 
-            else if (game.Players.Count == 1)
-                game.Players.Add(new Player(Color.Blue, name));
+            else if (Game.Players.Count == 1)
+                Game.Players.Add(new Player(Color.Blue, name));
 
-            else if (game.Players.Count == 2)
-                game.Players.Add(new Player(Color.Yellow, name));
+            else if (Game.Players.Count == 2)
+                Game.Players.Add(new Player(Color.Yellow, name));
 
-            else if (game.Players.Count == 3)
-                game.Players.Add(new Player(Color.Green, name));
+            else if (Game.Players.Count == 3)
+                Game.Players.Add(new Player(Color.Green, name));
 
-            foreach (var player in game.Players)
+            foreach (var player in Game.Players)
             {
                 SetOuterPathStart(player);
-
             }
         }
 
@@ -134,7 +151,7 @@ namespace LudoGameEngine
         public void CheckGamePieceCollision(int currentPosition, GamePiece ourGamePiece)
         {
             
-            foreach (Player player in game.Players)
+            foreach (Player player in Game.Players)
             {
                 foreach (GamePiece gamePiece in player.GamePieces)
                 {
@@ -191,17 +208,17 @@ namespace LudoGameEngine
         public List<Player> ChooseStartingPlayer()
         {
             var dice = 0;
-            while (game.Players.Count != playerOrder.Count)
+            while (Game.Players.Count != PlayerOrder.Count)
             {
-                foreach (Player player in game.Players)
+                foreach (Player player in Game.Players)
                 {
                     dice = RollDice();
                     player.StartingDice = dice;
                 }
 
-                playerOrder = game.Players.OrderByDescending(p => p.StartingDice).ToList();
+                PlayerOrder = Game.Players.OrderByDescending(p => p.StartingDice).ToList();
             }
-            return playerOrder;
+            return PlayerOrder;
         }
 
         public void MoveGamePieceToBoard(GamePiece gp, int dice, Player player)
