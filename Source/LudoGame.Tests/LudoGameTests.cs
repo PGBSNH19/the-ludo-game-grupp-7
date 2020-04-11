@@ -5,7 +5,7 @@ using LudoGame;
 
 namespace LudoGame.Tests
 {
-    public class UnitTest1
+    public class LudoGameTests
     {
         //[Fact]
         //public void CreateLobby_GeneratePlayers_PlayersAdded()

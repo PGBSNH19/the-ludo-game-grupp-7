@@ -9,7 +9,7 @@ namespace LudoGameEngine
 {
     public class GameEngine
     {
-        GameData GameData = new GameData();
+        public GameData GameData = new GameData();
         public Game Game { get; set; }
 
         public List<Player> PlayerOrder = new List<Player>();
@@ -20,9 +20,15 @@ namespace LudoGameEngine
             Game = game;
         }
 
+        public void InitPlayersNPieces(Game game)
+        {
+            GameData.InitilizePLayersAndPieces(game);
+
+        }
+
         public void LoadGame()
         {
-            var game = GameData.ContinueCurrentGame();
+            var game = GameData.LoadGame();
             Game = game;
         }
 
@@ -35,32 +41,32 @@ namespace LudoGameEngine
         {
             foreach (GamePiece gamePiece in player.GamePieces)
             {
-                gamePiece.PlayerID = player.PlayerID;
+                gamePiece.PlayerID = player.ID;
             }
         }
         public void AddPlayer(string name)
         {
             if (Game.Players.Count == 0)
             {
-                Game.Players.Add(new Player(Color.Red, name) { PlayerID = 1 });
+                Game.Players.Add(new Player(Color.Red, name) { ID = 1 });
                 SetGamePiecePlayerID(Game.Players[0]);
             }
 
             else if (Game.Players.Count == 1)
             {
-                Game.Players.Add(new Player(Color.Blue, name) { PlayerID = 2 });
+                Game.Players.Add(new Player(Color.Blue, name) { ID = 2 });
                 SetGamePiecePlayerID(Game.Players[1]);
             }
 
             else if (Game.Players.Count == 2)
             {
-                Game.Players.Add(new Player(Color.Yellow, name) { PlayerID = 3 });
+                Game.Players.Add(new Player(Color.Yellow, name) { ID = 3 });
                 SetGamePiecePlayerID(Game.Players[2]);
             }
 
             else if (Game.Players.Count == 3)
             {
-                Game.Players.Add(new Player(Color.Green, name) { PlayerID = 4 });
+                Game.Players.Add(new Player(Color.Green, name) { ID = 4 });
                 SetGamePiecePlayerID(Game.Players[3]);
             }
 
@@ -116,13 +122,13 @@ namespace LudoGameEngine
             if (dice == 1 || dice == 6)
             {
 
-                validToMovePieces.AddRange(player.GamePieces.Where(x => x.positionType != PositionType.FinishPosition).ToList());
+                validToMovePieces.AddRange(player.GamePieces.Where(x => x.PositionType != PositionType.FinishPosition).ToList());
 
             }
             else
             {
-                validToMovePieces.AddRange(player.GamePieces.Where(x => x.positionType != PositionType.StartingPosition &&
-                                                                    x.positionType != PositionType.FinishPosition).ToList());
+                validToMovePieces.AddRange(player.GamePieces.Where(x => x.PositionType != PositionType.StartingPosition &&
+                                                                    x.PositionType != PositionType.FinishPosition).ToList());
             }
 
             return validToMovePieces;
@@ -149,7 +155,7 @@ namespace LudoGameEngine
             gamePiece.StepCounter += dice;
             gamePiece = MoveGamePieceToInnerPath(gamePiece);
 
-            if (gamePiece.positionType == PositionType.InnerPath)
+            if (gamePiece.PositionType == PositionType.InnerPath)
             {
                 if (gamePiece.StepCounter > 5)
                 {
@@ -160,7 +166,7 @@ namespace LudoGameEngine
                 }
                 else if (gamePiece.StepCounter == 5)
                 {
-                    gamePiece.positionType = PositionType.FinishPosition;
+                    gamePiece.PositionType = PositionType.FinishPosition;
                     player.Score += 1;
                 }
             }
@@ -189,7 +195,7 @@ namespace LudoGameEngine
 
         public void PushGamePiece(GamePiece gamePiece, Player player)
         {
-            gamePiece.positionType = PositionType.StartingPosition;
+            gamePiece.PositionType = PositionType.StartingPosition;
 
             if (player.Color == Color.Red)
             {
@@ -213,7 +219,7 @@ namespace LudoGameEngine
         {
             if (gamePiece.StepCounter >= 40)
             {
-                gamePiece.positionType = PositionType.InnerPath;
+                gamePiece.PositionType = PositionType.InnerPath;
 
                 gamePiece.StepCounter = gamePiece.StepCounter - 40;
 
@@ -242,14 +248,17 @@ namespace LudoGameEngine
 
         public void MoveGamePieceToBoard(GamePiece gp, int dice, Player player)
         {
-            gp.positionType = PositionType.OuterPath;
+            gp.PositionType = PositionType.OuterPath;
             MoveGamePiece(gp, dice, player);
         }
 
         public Player CheckWin(Player player)
         {
             if (player.Score == 4)
+            {
+                Game.HasFinished = true;
                 return player;
+            }
             else
                 return null;
         }

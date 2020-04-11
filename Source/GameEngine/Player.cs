@@ -7,12 +7,14 @@ namespace LudoGameEngine
 {
     public class Player
     {
-        public int PlayerID { get; set; }
-        public Color Color { get; }
-        public string Name { get; }
+        public int ID { get; set; }
+        public Color Color { get; set; }
+        public string Name { get; set; }
         public int Score { get; set; }
+        public bool MyTurn { get; set; }
         public int GameID { get; set; }
-        public List<GamePiece> GamePieces = new List<GamePiece>();
+        public Game Game { get; set; }
+        public List<GamePiece> GamePieces { get; set; }
         
         [NotMapped]
         public int StartingDice { get; set; }
@@ -22,14 +24,15 @@ namespace LudoGameEngine
             Color = color;
             Name = name;
             Score = 0;
-            GamePieces.Add(new GamePiece() { PlayerGamePiece = 1, positionType = PositionType.StartingPosition });
-            GamePieces.Add(new GamePiece() { PlayerGamePiece = 2, positionType = PositionType.StartingPosition });
-            GamePieces.Add(new GamePiece() { PlayerGamePiece = 3, positionType = PositionType.StartingPosition });
-            GamePieces.Add(new GamePiece() { PlayerGamePiece = 4, positionType = PositionType.StartingPosition });
+            GamePieces = new List<GamePiece>();
+            GamePieces.Add(new GamePiece() { PlayerGamePiece = 1, PositionType = PositionType.StartingPosition });
+            GamePieces.Add(new GamePiece() { PlayerGamePiece = 2, PositionType = PositionType.StartingPosition });
+            GamePieces.Add(new GamePiece() { PlayerGamePiece = 3, PositionType = PositionType.StartingPosition });
+            GamePieces.Add(new GamePiece() { PlayerGamePiece = 4, PositionType = PositionType.StartingPosition });
         }
         public Player()
         {
-
+            GamePieces = new List<GamePiece>();
         }
     }
 }

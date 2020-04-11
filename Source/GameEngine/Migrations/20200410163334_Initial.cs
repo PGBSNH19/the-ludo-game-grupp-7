@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LudoGameEngine.Migrations
 {
@@ -14,8 +13,7 @@ namespace LudoGameEngine.Migrations
                     GameID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     WinnerPlayerName = table.Column<string>(nullable: true),
-                    EndTimeOfGame = table.Column<DateTime>(nullable: false),
-                    NextPlayerID = table.Column<int>(nullable: true)
+                    HasFinished = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,15 +24,22 @@ namespace LudoGameEngine.Migrations
                 name: "Player",
                 columns: table => new
                 {
-                    PlayerID = table.Column<int>(nullable: false),
+                    ID = table.Column<int>(nullable: false),
                     Color = table.Column<string>(nullable: false),
                     Name = table.Column<string>(maxLength: 50, nullable: true),
                     Score = table.Column<int>(nullable: false),
+                    MyTurn = table.Column<bool>(nullable: false),
                     GameID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Player", x => x.PlayerID);
+                    table.PrimaryKey("PK_Player", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Player_Game_GameID",
+                        column: x => x.GameID,
+                        principalTable: "Game",
+                        principalColumn: "GameID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -46,7 +51,7 @@ namespace LudoGameEngine.Migrations
                     PlayerGamePiece = table.Column<int>(nullable: false),
                     StepCounter = table.Column<int>(nullable: false),
                     BoardPosition = table.Column<int>(nullable: false),
-                    positionType = table.Column<int>(nullable: false),
+                    PositionType = table.Column<string>(nullable: false),
                     PlayerID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -56,7 +61,7 @@ namespace LudoGameEngine.Migrations
                         name: "FK_GamePiece_Player_PlayerID",
                         column: x => x.PlayerID,
                         principalTable: "Player",
-                        principalColumn: "PlayerID",
+                        principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -64,18 +69,23 @@ namespace LudoGameEngine.Migrations
                 name: "IX_GamePiece_PlayerID",
                 table: "GamePiece",
                 column: "PlayerID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Player_GameID",
+                table: "Player",
+                column: "GameID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Game");
-
-            migrationBuilder.DropTable(
                 name: "GamePiece");
 
             migrationBuilder.DropTable(
                 name: "Player");
+
+            migrationBuilder.DropTable(
+                name: "Game");
         }
     }
 }

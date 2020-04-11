@@ -10,7 +10,7 @@ namespace LudoGameEngine
         public int PlayerGamePiece { get; set; }
         public int StepCounter { get; set; }
         public int BoardPosition { get; set; }
-        public PositionType positionType { get; set; }
+        public PositionType PositionType { get; set; }
         public int PlayerID { get; set; }
         public Player Player { get; set; }
     }

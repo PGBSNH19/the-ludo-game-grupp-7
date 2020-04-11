@@ -68,12 +68,16 @@ namespace LudoGame
         private void LoadGame()
         {
             Console.WriteLine("Checking for current game");
-            Thread.Sleep(200);
-            Console.Write(".");
-            Thread.Sleep(200);
-            Console.Write(".");
-            Thread.Sleep(200);
-            Console.Write(".");
+            Thread.Sleep(400);
+            Console.Write(" . ");
+            Thread.Sleep(400);
+            Console.Write(" . ");
+            Thread.Sleep(400);
+            Console.Write(" . ");
+            Thread.Sleep(400);
+            Console.Write(" . ");
+            Thread.Sleep(400);
+            Console.Write(" . ");
 
             try
             {
@@ -92,7 +96,10 @@ namespace LudoGame
             {
                 Console.WriteLine("No game found");
             }
+
             GameRun(GameEngine.Game.Players);
+
+            GameEngine.GameData.FinishGame(GameEngine.Game);
 
             Console.WriteLine("Game done!");
         }
@@ -126,18 +133,24 @@ namespace LudoGame
             var playerOrder = GameEngine.ChooseStartingPlayer();
             Console.WriteLine($"{playerOrder[0].Name} rolled the highest and is the starting player!");
 
+            GameEngine.InitPlayersNPieces(GameEngine.Game);
+
             GameRun(playerOrder);
+
+            GameEngine.GameData.FinishGame(GameEngine.Game);
 
             Console.WriteLine("Game done!");
         }
-        private void GameRun(List<Player> playerOrder)
+        public void GameRun(List<Player> playerOrder)
         {
             Player winPlayer = null;
             while (winPlayer == null)
             {
                 for (int i = 0; i < playerOrder.Count; i++)
                 {
+                    playerOrder[i].MyTurn = true;
                     winPlayer = PlayerTurn(playerOrder[i]);
+                    playerOrder[i].MyTurn = false;
                     if (winPlayer != null)
                         break;
                 }
@@ -157,7 +170,7 @@ namespace LudoGame
             foreach (var gp in validToMovePieces)
             {
                 Console.WriteLine($"GamePiece nr: {gp.PlayerGamePiece} is on the" +
-                    $" {gp.positionType} at position: {gp.BoardPosition} and has taken {gp.StepCounter} steps");
+                    $" {gp.PositionType} at position: {gp.BoardPosition} and has taken {gp.StepCounter} steps");
             }
 
             if (validToMovePieces.Count == 0)
@@ -195,7 +208,7 @@ namespace LudoGame
             }
 
 
-            if (selectedGamePiece.positionType == PositionType.StartingPosition)
+            if (selectedGamePiece.PositionType == PositionType.StartingPosition)
             {
                 GameEngine.MoveGamePieceToBoard(selectedGamePiece, dice, player);
             }
@@ -208,11 +221,12 @@ namespace LudoGame
             if (player != null)
                 return player;
 
-            Console.WriteLine($"Your piece is now at position: {selectedGamePiece.BoardPosition} on the {selectedGamePiece.positionType}" +
+            Console.WriteLine($"Your piece is now at position: {selectedGamePiece.BoardPosition} on the {selectedGamePiece.PositionType}" +
                 $" and has taken: {selectedGamePiece.StepCounter} steps \n");
 
+            
+            GameEngine.GameData.UpdateGame(GameEngine.Game);
 
-            GameEngine.UpdateGame(GameEngine.Game);
             return null;
         }
 

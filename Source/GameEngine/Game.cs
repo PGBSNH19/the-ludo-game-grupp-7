@@ -7,9 +7,14 @@ namespace LudoGameEngine
     {
         public int GameID { get; set; }
         public string? WinnerPlayerName { get; set; }
-        public DateTime EndTimeOfGame { get; set; }
-        public int? NextPlayerID { get; set; }
+        public bool HasFinished { get; set; }
 
-        public List<Player> Players = new List<Player>();
+        public List<Player> Players { get; set; }
+
+        public Game()
+        {
+            HasFinished = false;
+            Players = new List<Player>();
+        }
     }
 }

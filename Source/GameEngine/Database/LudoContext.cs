@@ -28,9 +28,13 @@ namespace LudoGameEngine.Database
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            var converter = new ValueConverter<Color, string>(
+            var colorConverter = new ValueConverter<Color, string>(
              v => v.ToString(),
              v => (Color)Enum.Parse(typeof(Color), v));
+
+            var positionTypeConverter = new ValueConverter<PositionType, string>(
+             v => v.ToString(),
+             v => (PositionType)Enum.Parse(typeof(PositionType), v));
 
             builder.Entity<Player>()
                 .Property(x => x.Name)
@@ -38,11 +42,15 @@ namespace LudoGameEngine.Database
 
             builder.Entity<Player>()
                  .Property(x => x.Color)
-                 .HasConversion(converter);
+                 .HasConversion(colorConverter);
 
             builder.Entity<Player>()
-                .Property(x => x.PlayerID)
+                .Property(x => x.ID)
                 .ValueGeneratedNever();
+
+            builder.Entity<GamePiece>()
+                 .Property(x => x.PositionType)
+                 .HasConversion(positionTypeConverter);
 
             //builder.Entity<GamePiece>()
             //    .Property(x => x.PlayerGamePiece)
