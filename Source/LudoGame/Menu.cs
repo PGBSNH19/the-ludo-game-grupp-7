@@ -56,13 +56,55 @@ namespace LudoGame
                     break;
 
                 case ConsoleKey.D3:
-                    //GameEngine.CheckGameHistory();
+                    CheckGameHistory();
                     break;
 
                 default:
                     break;
             }
 
+        }
+
+        private void CheckGameHistory()
+        {
+            List<Game> pastGames = new List<Game>();
+
+            Console.WriteLine("Checking for past game");
+            Thread.Sleep(400);
+            Console.Write(" . ");
+            Thread.Sleep(400);
+            Console.Write(" . ");
+            Thread.Sleep(400);
+            Console.Write(" . ");
+            Thread.Sleep(400);
+            Console.Write(" . ");
+            Thread.Sleep(400);
+            Console.Write(" . ");
+
+            try
+            {
+                pastGames = GameEngine.GameData.ShowGameHistory();
+            }
+            catch (Exception)
+            {
+
+                Console.WriteLine("Something went wrong..");
+            }
+
+            if(pastGames != null)
+                Console.WriteLine("Success!");
+            else
+                Console.WriteLine("No past games found");
+
+
+            Console.WriteLine("These are the past games:");
+            foreach (var game in pastGames)
+            {
+                Console.WriteLine($"GameID: {game.GameID}, The winning player: {game.WinnerPlayerName}");
+            }
+            Console.WriteLine("Press any key to get back to the menu");
+            Console.ReadKey();
+            return;
         }
 
         private void LoadGame()
@@ -85,12 +127,12 @@ namespace LudoGame
             }
             catch (Exception)
             {
-                Console.WriteLine("Something went wrong");
+                Console.WriteLine("Something went wrong..");
             }
 
             if (GameEngine.Game != null)
             {
-                Console.WriteLine("Success");
+                Console.WriteLine("Success!");
             }
             else
             {
@@ -148,16 +190,25 @@ namespace LudoGame
             {
                 for (int i = 0; i < playerOrder.Count; i++)
                 {
-                    //if its my turn
-                    if(playerOrder[0].MyTurn == true)
+                    if(playerOrder[i].MyTurn == true)
                     {
+                        winPlayer = PlayerTurn(playerOrder[i]);
+                        playerOrder[i].MyTurn = false;
+                        
+                        //sätta nästa i listans turn till true, finns inte nästa i listan, börja om från början
+                        if(i == (playerOrder.Count - 1))
+                        {
+                            playerOrder[0].MyTurn = true;
+                        }
+                        else
+                        {
+                            playerOrder[i + 1].MyTurn = true;
+                        }
 
+                        if (winPlayer != null)
+                            break;
                     }
-                    playerOrder[i].MyTurn = true;
-                    winPlayer = PlayerTurn(playerOrder[i]);
-                    playerOrder[i].MyTurn = false;
-                    if (winPlayer != null)
-                        break;
+                    
                 }
             }
             Console.WriteLine($"Congratulations, {winPlayer.Name}! You won!");

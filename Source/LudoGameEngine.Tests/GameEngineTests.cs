@@ -15,11 +15,12 @@ namespace LudoGameEngine.Tests
         public void Dice_RollDice_ValidInt_Ture_IntBtw1and6()
         {
             //arrange
-            GameEngine dice = new GameEngine();
-            var die = dice.RollDice();
+            GameEngine gameEngine = new GameEngine();
             //act
+            var dice = gameEngine.RollDice();
+
             //Assert
-            Assert.InRange(die, 1, 6);
+            Assert.InRange(dice, 1, 6);
 
         }
 
@@ -43,7 +44,8 @@ namespace LudoGameEngine.Tests
         {
             //arrange
             GameEngine gameEngine = new GameEngine();
-            gameEngine.CreateNewGame();
+            Game game = new Game();
+            gameEngine.Game = game;
 
             gameEngine.AddPlayer("Olle");
             gameEngine.AddPlayer("Per");
@@ -61,11 +63,12 @@ namespace LudoGameEngine.Tests
         }
 
         [Fact]
-        public void SetOuterPathStart_SetValidStartPosition_()
+        public void SetOuterPathStart_SetValidStartPosition_Success()
         {
             //arrange
             GameEngine gameEngine = new GameEngine();
-            gameEngine.CreateNewGame();
+            Game game = new Game();
+            gameEngine.Game = game;
 
 
             //act
@@ -83,10 +86,8 @@ namespace LudoGameEngine.Tests
         public void FinishGame_APlayerScore4Points_GameIsFinishedTrue()
         {
             GameEngine gameEngine = new GameEngine();
-            GameData gameData = new GameData();
-            Menu menu = new Menu();
-
-            gameEngine.CreateNewGame();
+            Game game = new Game();
+            gameEngine.Game = game;
             gameEngine.AddPlayer("Kalle");
             gameEngine.AddPlayer("Palle");
 
@@ -103,7 +104,8 @@ namespace LudoGameEngine.Tests
         {
             //arrange
             GameEngine gameEngine = new GameEngine();
-            gameEngine.CreateNewGame();
+            Game game = new Game();
+            gameEngine.Game = game;
             Player player = new Player(Color.Green, "Lasse");
             player.GamePieces[0].PositionType = PositionType.OuterPath;
             player.GamePieces[0].BoardPosition = 39;
@@ -121,7 +123,8 @@ namespace LudoGameEngine.Tests
         {
             //arrange
             GameEngine gameEngine = new GameEngine();
-            gameEngine.CreateNewGame();
+            Game game = new Game();
+            gameEngine.Game = game;
             gameEngine.Game.Players.Add(new Player(Color.Blue ,"Kålle"));
             gameEngine.Game.Players.Add(new Player(Color.Green ,"Ada"));
             gameEngine.Game.Players[0].GamePieces[0].PositionType = PositionType.OuterPath;
@@ -143,7 +146,8 @@ namespace LudoGameEngine.Tests
             
             //arrange
             GameEngine gameEngine = new GameEngine();
-            gameEngine.CreateNewGame();
+            Game game = new Game();
+            gameEngine.Game = game;
             gameEngine.Game.Players.Add(new Player(Color.Red, "Nils"));
             gameEngine.Game.Players[0].GamePieces[0].PositionType = PositionType.OuterPath;
             gameEngine.Game.Players[0].GamePieces[0].BoardPosition = 38;
@@ -163,7 +167,8 @@ namespace LudoGameEngine.Tests
         {
             //arrange
             GameEngine gameEngine = new GameEngine();
-            gameEngine.CreateNewGame();
+            Game game = new Game();
+            gameEngine.Game = game;
             gameEngine.Game.Players.Add(new Player(Color.Red, "Nils"));
             gameEngine.Game.Players[0].GamePieces[0].PositionType = PositionType.OuterPath;
             gameEngine.Game.Players[0].GamePieces[0].BoardPosition = 38;
@@ -184,7 +189,8 @@ namespace LudoGameEngine.Tests
         {
             //arrange
             GameEngine gameEngine = new GameEngine();
-            gameEngine.CreateNewGame();
+            Game game = new Game();
+            gameEngine.Game = game;
             gameEngine.Game.Players.Add(new Player(Color.Red, "Nils"));
             gameEngine.Game.Players[0].GamePieces[0].PositionType = PositionType.InnerPath;
             gameEngine.Game.Players[0].GamePieces[0].BoardPosition = 2;
@@ -202,7 +208,8 @@ namespace LudoGameEngine.Tests
         {
             //arrange
             GameEngine gameEngine = new GameEngine();
-            gameEngine.CreateNewGame();
+            Game game = new Game();
+            gameEngine.Game = game;
             gameEngine.Game.Players.Add(new Player(Color.Red, "Nils"));
             gameEngine.Game.Players[0].GamePieces[0].PositionType = PositionType.InnerPath;
             gameEngine.Game.Players[0].GamePieces[0].BoardPosition = 2;
@@ -223,7 +230,8 @@ namespace LudoGameEngine.Tests
         {
             //arrange
             GameEngine gameEngine = new GameEngine();
-            gameEngine.CreateNewGame();
+            Game game = new Game();
+            gameEngine.Game = game;
             gameEngine.Game.Players.Add(new Player(Color.Red, "Nils"));
             gameEngine.Game.Players[0].GamePieces[0].PositionType = PositionType.InnerPath;
             gameEngine.Game.Players[0].GamePieces[0].BoardPosition = 2;

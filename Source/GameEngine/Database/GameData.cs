@@ -105,7 +105,7 @@ namespace LudoGameEngine.Database
 
         public List<Game> ShowGameHistory()
         {
-            var games = _ludoContext.Game.Include(x => x.Players).Where(x => x.WinnerPlayerName != null).ToList();
+            var games = _ludoContext.Game.Where(x => x.WinnerPlayerName != null).ToList();
 
             return games;
         }
