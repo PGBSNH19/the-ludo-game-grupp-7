@@ -133,7 +133,7 @@ namespace LudoGame
             var playerOrder = GameEngine.ChooseStartingPlayer();
             Console.WriteLine($"{playerOrder[0].Name} rolled the highest and is the starting player!");
 
-            GameEngine.InitPlayersNPieces(GameEngine.Game);
+            GameEngine.GameData.InitilizePLayersAndPieces(GameEngine.Game);
 
             GameRun(playerOrder);
 

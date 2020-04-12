@@ -72,19 +72,20 @@ namespace LudoGameEngine.Tests
         }
 
         [Fact]
-        public void SetOuterPathStart_SetValidStartPosition()
+        public void SetOuterPathStart_SetValidStartPosition_()
         {
             //arrange
             GameEngine gameEngine = new GameEngine();
-            Game game = new Game();
+            gameEngine.CreateNewGame();
+
 
             //act
             gameEngine.AddPlayer("Ralph");
             gameEngine.AddPlayer("Dolph Lundgren");
 
             //assert
-            Assert.Equal(0, game.Players[0].GamePieces[0].BoardPosition);
-            Assert.Equal(10, game.Players[1].GamePieces[0].BoardPosition);
+            Assert.Equal(0, gameEngine.Game.Players[0].GamePieces[0].BoardPosition);
+            Assert.Equal(10, gameEngine.Game.Players[1].GamePieces[0].BoardPosition);
 
         }
 

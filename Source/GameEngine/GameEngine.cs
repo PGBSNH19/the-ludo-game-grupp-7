@@ -20,21 +20,10 @@ namespace LudoGameEngine
             Game = game;
         }
 
-        public void InitPlayersNPieces(Game game)
-        {
-            GameData.InitilizePLayersAndPieces(game);
-
-        }
-
         public void LoadGame()
         {
             var game = GameData.LoadGame();
             Game = game;
-        }
-
-        public void UpdateGame(Game game)
-        {
-            GameData.UpdateGame(game);
         }
 
         public void SetGamePiecePlayerID(Player player)
@@ -242,6 +231,7 @@ namespace LudoGameEngine
                 }
 
                 PlayerOrder = Game.Players.OrderByDescending(p => p.StartingDice).ToList();
+                PlayerOrder[0].MyTurn = true;
             }
             return PlayerOrder;
         }
