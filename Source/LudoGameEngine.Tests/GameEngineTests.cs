@@ -10,18 +10,7 @@ namespace LudoGameEngine.Tests
 {
     public class GameEngineTests
     {
-        //[Fact]
-        //public void GamePiece_MoveGamePiece_Move3Positions()
-        //{
-        //    //arrange
-        //    //GamePiece gp = new GamePiece();
-        //    //int dice = 3;
-        //    //act
-        //    //assert
-
-
-
-        //}
+ 
         [Fact]
         public void Dice_RollDice_ValidInt_Ture_IntBtw1and6()
         {
@@ -54,7 +43,7 @@ namespace LudoGameEngine.Tests
         {
             //arrange
             GameEngine gameEngine = new GameEngine();
-            Game game = new Game();
+            gameEngine.CreateNewGame();
 
             gameEngine.AddPlayer("Olle");
             gameEngine.AddPlayer("Per");
@@ -64,10 +53,10 @@ namespace LudoGameEngine.Tests
 
             //act
             gameEngine.ChooseStartingPlayer();
-            var expectedList = game.Players.OrderByDescending(x => x.StartingDice).ToList();
+            var expectedList = gameEngine.Game.Players.OrderByDescending(x => x.StartingDice).ToList();
 
             //assert
-            Assert.NotEqual(game.Players, gameEngine.PlayerOrder);
+            Assert.NotEqual(gameEngine.Game.Players, gameEngine.PlayerOrder);
             Assert.True(expectedList.SequenceEqual(gameEngine.PlayerOrder));
         }
 
@@ -114,7 +103,7 @@ namespace LudoGameEngine.Tests
         {
             //arrange
             GameEngine gameEngine = new GameEngine();
-            Game game = new Game();
+            gameEngine.CreateNewGame();
             Player player = new Player(Color.Green, "Lasse");
             player.GamePieces[0].PositionType = PositionType.OuterPath;
             player.GamePieces[0].BoardPosition = 39;
@@ -132,20 +121,20 @@ namespace LudoGameEngine.Tests
         {
             //arrange
             GameEngine gameEngine = new GameEngine();
-            Game game = new Game();
-            game.Players.Add(new Player(Color.Blue ,"Kålle"));
-            game.Players.Add(new Player(Color.Green ,"Ada"));
-            game.Players[0].GamePieces[0].PositionType = PositionType.OuterPath;
-            game.Players[0].GamePieces[0].BoardPosition = 38;
-            game.Players[1].GamePieces[0].PositionType = PositionType.OuterPath;
-            game.Players[1].GamePieces[0].BoardPosition = 39;
+            gameEngine.CreateNewGame();
+            gameEngine.Game.Players.Add(new Player(Color.Blue ,"Kålle"));
+            gameEngine.Game.Players.Add(new Player(Color.Green ,"Ada"));
+            gameEngine.Game.Players[0].GamePieces[0].PositionType = PositionType.OuterPath;
+            gameEngine.Game.Players[0].GamePieces[0].BoardPosition = 38;
+            gameEngine.Game.Players[1].GamePieces[0].PositionType = PositionType.OuterPath;
+            gameEngine.Game.Players[1].GamePieces[0].BoardPosition = 39;
 
             //act
-            gameEngine.MoveGamePiece(game.Players[0].GamePieces[0], 1, game.Players[0]);
+            gameEngine.MoveGamePiece(gameEngine.Game.Players[0].GamePieces[0], 1, gameEngine.Game.Players[0]);
 
             //assert
-            Assert.Equal(30, game.Players[1].GamePieces[0].BoardPosition);
-            Assert.NotEqual(39, game.Players[1].GamePieces[0].BoardPosition);
+            Assert.Equal(30, gameEngine.Game.Players[1].GamePieces[0].BoardPosition);
+            Assert.NotEqual(39, gameEngine.Game.Players[1].GamePieces[0].BoardPosition);
         }
 
         [Fact]
@@ -154,18 +143,18 @@ namespace LudoGameEngine.Tests
             
             //arrange
             GameEngine gameEngine = new GameEngine();
-            Game game = new Game();
-            game.Players.Add(new Player(Color.Red, "Nils"));
-            game.Players[0].GamePieces[0].PositionType = PositionType.OuterPath;
-            game.Players[0].GamePieces[0].BoardPosition = 38;
-            game.Players[0].GamePieces[1].PositionType = PositionType.OuterPath;
-            game.Players[0].GamePieces[1].BoardPosition = 37;
+            gameEngine.CreateNewGame();
+            gameEngine.Game.Players.Add(new Player(Color.Red, "Nils"));
+            gameEngine.Game.Players[0].GamePieces[0].PositionType = PositionType.OuterPath;
+            gameEngine.Game.Players[0].GamePieces[0].BoardPosition = 38;
+            gameEngine.Game.Players[0].GamePieces[1].PositionType = PositionType.OuterPath;
+            gameEngine.Game.Players[0].GamePieces[1].BoardPosition = 37;
 
             //act
-            gameEngine.MoveGamePiece(game.Players[0].GamePieces[1], 1, game.Players[0]);
+            gameEngine.MoveGamePiece(gameEngine.Game.Players[0].GamePieces[1], 1, gameEngine.Game.Players[0]);
 
             //assert
-            Assert.Equal(38, game.Players[0].GamePieces[1].BoardPosition);
+            Assert.Equal(38, gameEngine.Game.Players[0].GamePieces[1].BoardPosition);
         }
 
 
@@ -174,19 +163,19 @@ namespace LudoGameEngine.Tests
         {
             //arrange
             GameEngine gameEngine = new GameEngine();
-            Game game = new Game();
-            game.Players.Add(new Player(Color.Red, "Nils"));
-            game.Players[0].GamePieces[0].PositionType = PositionType.OuterPath;
-            game.Players[0].GamePieces[0].BoardPosition = 38;
-            game.Players[0].GamePieces[0].StepCounter = 38;
+            gameEngine.CreateNewGame();
+            gameEngine.Game.Players.Add(new Player(Color.Red, "Nils"));
+            gameEngine.Game.Players[0].GamePieces[0].PositionType = PositionType.OuterPath;
+            gameEngine.Game.Players[0].GamePieces[0].BoardPosition = 38;
+            gameEngine.Game.Players[0].GamePieces[0].StepCounter = 38;
 
             //act
-            gameEngine.MoveGamePiece(game.Players[0].GamePieces[0], 4, game.Players[0]);
+            gameEngine.MoveGamePiece(gameEngine.Game.Players[0].GamePieces[0], 4, gameEngine.Game.Players[0]);
 
             //assert
-            Assert.Equal(PositionType.InnerPath, game.Players[0].GamePieces[0].PositionType);
-            Assert.Equal(2, game.Players[0].GamePieces[0].BoardPosition);
-            Assert.Equal(2, game.Players[0].GamePieces[0].StepCounter);
+            Assert.Equal(PositionType.InnerPath, gameEngine.Game.Players[0].GamePieces[0].PositionType);
+            Assert.Equal(2, gameEngine.Game.Players[0].GamePieces[0].BoardPosition);
+            Assert.Equal(2, gameEngine.Game.Players[0].GamePieces[0].StepCounter);
 
         }
 
@@ -195,17 +184,17 @@ namespace LudoGameEngine.Tests
         {
             //arrange
             GameEngine gameEngine = new GameEngine();
-            Game game = new Game();
-            game.Players.Add(new Player(Color.Red, "Nils"));
-            game.Players[0].GamePieces[0].PositionType = PositionType.InnerPath;
-            game.Players[0].GamePieces[0].BoardPosition = 2;
-            game.Players[0].GamePieces[0].StepCounter = 2;
+            gameEngine.CreateNewGame();
+            gameEngine.Game.Players.Add(new Player(Color.Red, "Nils"));
+            gameEngine.Game.Players[0].GamePieces[0].PositionType = PositionType.InnerPath;
+            gameEngine.Game.Players[0].GamePieces[0].BoardPosition = 2;
+            gameEngine.Game.Players[0].GamePieces[0].StepCounter = 2;
 
             //act
-            gameEngine.MoveGamePiece(game.Players[0].GamePieces[0], 4, game.Players[0]);
+            gameEngine.MoveGamePiece(gameEngine.Game.Players[0].GamePieces[0], 4, gameEngine.Game.Players[0]);
 
             //assert
-            Assert.Equal(4, game.Players[0].GamePieces[0].BoardPosition);
+            Assert.Equal(4, gameEngine.Game.Players[0].GamePieces[0].BoardPosition);
         }
 
         [Fact]
@@ -213,21 +202,20 @@ namespace LudoGameEngine.Tests
         {
             //arrange
             GameEngine gameEngine = new GameEngine();
-            Game game = new Game();
-            Menu menu = new Menu();
-            game.Players.Add(new Player(Color.Red, "Nils"));
-            game.Players[0].GamePieces[0].PositionType = PositionType.InnerPath;
-            game.Players[0].GamePieces[0].BoardPosition = 2;
-            game.Players[0].GamePieces[0].StepCounter = 2;
-            game.Players[0].Score = 3;
+            gameEngine.CreateNewGame();
+            gameEngine.Game.Players.Add(new Player(Color.Red, "Nils"));
+            gameEngine.Game.Players[0].GamePieces[0].PositionType = PositionType.InnerPath;
+            gameEngine.Game.Players[0].GamePieces[0].BoardPosition = 2;
+            gameEngine.Game.Players[0].GamePieces[0].StepCounter = 2;
+            gameEngine.Game.Players[0].Score = 3;
 
             //act
-            gameEngine.MoveGamePiece(game.Players[0].GamePieces[0], 3, game.Players[0]);
-            var winnerPlayer = gameEngine.CheckWin(game.Players[0]);
+            gameEngine.MoveGamePiece(gameEngine.Game.Players[0].GamePieces[0], 3, gameEngine.Game.Players[0]);
+            var winnerPlayer = gameEngine.CheckWin(gameEngine.Game.Players[0]);
 
             //assert
-            Assert.Equal(4, game.Players[0].Score);
-            Assert.Equal(winnerPlayer, game.Players[0]);
+            Assert.Equal(4, gameEngine.Game.Players[0].Score);
+            Assert.Equal(winnerPlayer, gameEngine.Game.Players[0]);
 
         }
         [Fact]
@@ -235,25 +223,24 @@ namespace LudoGameEngine.Tests
         {
             //arrange
             GameEngine gameEngine = new GameEngine();
-            Game game = new Game();
-            Menu menu = new Menu();
-            game.Players.Add(new Player(Color.Red, "Nils"));
-            game.Players[0].GamePieces[0].PositionType = PositionType.InnerPath;
-            game.Players[0].GamePieces[0].BoardPosition = 2;
-            game.Players[0].GamePieces[0].StepCounter = 2;
-            game.Players[0].GamePieces[1].PositionType = PositionType.InnerPath;
-            game.Players[0].GamePieces[1].BoardPosition = 1;
-            game.Players[0].GamePieces[2].PositionType = PositionType.OuterPath;
-            game.Players[0].GamePieces[2].BoardPosition = 2;
-            game.Players[0].GamePieces[3].PositionType = PositionType.StartingPosition;
-            game.Players[0].GamePieces[3].BoardPosition = 1;
+            gameEngine.CreateNewGame();
+            gameEngine.Game.Players.Add(new Player(Color.Red, "Nils"));
+            gameEngine.Game.Players[0].GamePieces[0].PositionType = PositionType.InnerPath;
+            gameEngine.Game.Players[0].GamePieces[0].BoardPosition = 2;
+            gameEngine.Game.Players[0].GamePieces[0].StepCounter = 2;
+            gameEngine.Game.Players[0].GamePieces[1].PositionType = PositionType.InnerPath;
+            gameEngine.Game.Players[0].GamePieces[1].BoardPosition = 1;
+            gameEngine.Game.Players[0].GamePieces[2].PositionType = PositionType.OuterPath;
+            gameEngine.Game.Players[0].GamePieces[2].BoardPosition = 2;
+            gameEngine.Game.Players[0].GamePieces[3].PositionType = PositionType.StartingPosition;
+            gameEngine.Game.Players[0].GamePieces[3].BoardPosition = 1;
 
             //act
-            gameEngine.MoveGamePiece(game.Players[0].GamePieces[0], 3, game.Players[0]);
-            var validpiecestomove = gameEngine.GetValidPiecesToMove(game.Players[0], 1);
+            gameEngine.MoveGamePiece(gameEngine.Game.Players[0].GamePieces[0], 3, gameEngine.Game.Players[0]);
+            var validpiecestomove = gameEngine.GetValidPiecesToMove(gameEngine.Game.Players[0], 1);
 
             //assert
-            Assert.Equal(PositionType.FinishPosition, game.Players[0].GamePieces[0].PositionType);
+            Assert.Equal(PositionType.FinishPosition, gameEngine.Game.Players[0].GamePieces[0].PositionType);
             Assert.Equal(3, validpiecestomove.Count);
         }
 

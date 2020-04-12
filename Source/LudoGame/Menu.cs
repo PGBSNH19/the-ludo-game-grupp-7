@@ -148,6 +148,11 @@ namespace LudoGame
             {
                 for (int i = 0; i < playerOrder.Count; i++)
                 {
+                    //if its my turn
+                    if(playerOrder[0].MyTurn == true)
+                    {
+
+                    }
                     playerOrder[i].MyTurn = true;
                     winPlayer = PlayerTurn(playerOrder[i]);
                     playerOrder[i].MyTurn = false;
