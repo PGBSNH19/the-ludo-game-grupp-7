@@ -94,4 +94,32 @@ Idag så designade vi databas-strukturen, och såg att vi var tvugna att byta ut
 - Vi tog bort klassen Position och lade till de props som behövdes därifrån i GamePiece. 
 - Börjat med att lägga in metoder för att plocka ur data ur databasen. Vi har fått migrations att funka. I och med de ändringarna vi gjorde idag fick vi lägga en hel del tid på att refakturera kod.
 
-   
+
+
+**2020-04-10**
+
+- Vi har lagt till metoder för att fortsätta ett gammalt spel.
+- Börjat på metoder för att visa spelhistoriken
+- ändrade i vår DBContext i ModelBuilder. Speciellt Game tabellen. 
+- Vi skapade "CreateNewGame" i GameEngine.
+- vi skapade en metod som sätter alla GamePiecesPlayerID till PlayerID.
+- InitializePlayersAndPieces. Lägger till alla aktuella spelare och pjäser i databasen.
+- @Spy Grupp3 (Benjamin): SaveGamePiecesMove.
+- FinishGame. tar bort alla spelare & deras gamepieces. gör om spelet till HasFinished och sparar i databasen. (översätter inte spelet till finska)
+- La till en ValueConverter i ModelBuilder för vår positionType. Översätter från enum till string.
+- fler UnitTest. testar att spara ett spel till DB. och ett för att avsluta ett spel.
+
+
+
+**2020-04-12**
+
+- Fixade massa unittest som skrev ner "tomma" gameobject till databasen i onödan.
+- fixade MyTurn så att rätt person får slå tärningen på sin tur.
+- tog bort en "include" för Player på anropet för att hämta spel "pastgame" i databasen.
+
+
+
+2020-04-13
+
+- La till en ConsoleWriteLine för att visa hur många poäng en spelare har. (vi hade skrivit i UserStory men glömt bort tills nu)
+- 
