@@ -175,7 +175,7 @@ namespace LudoGame
             var playerOrder = GameEngine.ChooseStartingPlayer();
             Console.WriteLine($"{playerOrder[0].Name} rolled the highest and is the starting player!");
 
-            GameEngine.GameData.InitilizePLayersAndPieces(GameEngine.Game);
+            GameEngine.GameData.InitilizePlayersAndPieces(GameEngine.Game);
 
             GameRun(playerOrder);
 
@@ -273,13 +273,14 @@ namespace LudoGame
                 GameEngine.MoveGamePiece(selectedGamePiece, dice, player);
             }
 
+            Console.WriteLine($"Your piece is now at position: {selectedGamePiece.BoardPosition} on the {selectedGamePiece.PositionType}" +
+                $" and has taken: {selectedGamePiece.StepCounter} steps \n");
+            Console.WriteLine($"Your current score is {player.Score} points. \n");
+
             player = GameEngine.CheckWin(player);
             if (player != null)
                 return player;
 
-            Console.WriteLine($"Your piece is now at position: {selectedGamePiece.BoardPosition} on the {selectedGamePiece.PositionType}" +
-                $" and has taken: {selectedGamePiece.StepCounter} steps \n");
-            Console.WriteLine($"Your current score is {player.Score} points. \n");
             
             GameEngine.GameData.UpdateGame(GameEngine.Game);
 

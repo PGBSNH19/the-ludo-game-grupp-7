@@ -23,7 +23,7 @@ namespace LudoGameEngine.Database
             return game;
         }
 
-        public void InitilizePLayersAndPieces(Game game)
+        public void InitilizePlayersAndPieces(Game game)
         {
             foreach (var player in game.Players)
             {
@@ -53,6 +53,7 @@ namespace LudoGameEngine.Database
             _ludoContext.SaveChanges();
         }
 
+        //@Spy grupp 3 (Benjamin), hjälp med att vår databas fick constraint problem och Benjamin visade hur rupp tre hade löst detta problem.
         public void SaveGamePieceMove(GamePiece gp)
         {
             var currentPiece = _ludoContext.GamePiece.SingleOrDefault(x => x.GamePieceID == gp.GamePieceID);
