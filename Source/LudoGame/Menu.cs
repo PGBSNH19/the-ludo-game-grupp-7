@@ -279,7 +279,7 @@ namespace LudoGame
 
             Console.WriteLine($"Your piece is now at position: {selectedGamePiece.BoardPosition} on the {selectedGamePiece.PositionType}" +
                 $" and has taken: {selectedGamePiece.StepCounter} steps \n");
-
+            Console.WriteLine($"Your current score is {player.Score} points. \n");
             
             GameEngine.GameData.UpdateGame(GameEngine.Game);
 
