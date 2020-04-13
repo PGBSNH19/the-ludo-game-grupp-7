@@ -107,21 +107,16 @@ namespace LudoGameEngine
         {
             List<GamePiece> validToMovePieces = new List<GamePiece>();
 
-
             if (dice == 1 || dice == 6)
             {
-
                 validToMovePieces.AddRange(player.GamePieces.Where(x => x.PositionType != PositionType.FinishPosition).ToList());
-
             }
             else
             {
                 validToMovePieces.AddRange(player.GamePieces.Where(x => x.PositionType != PositionType.StartingPosition &&
                                                                     x.PositionType != PositionType.FinishPosition).ToList());
             }
-
             return validToMovePieces;
-
         }
 
        

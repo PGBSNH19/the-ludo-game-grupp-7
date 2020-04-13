@@ -11,7 +11,7 @@ namespace LudoGameEngine.Tests
     public class GameEngineTests
     {
  
-        //ett test som testar att någon vinner ett spel och det blir sparat till databasen
+        
         [Fact]
         public void Dice_RollDice_ValidInt_Ture_IntBtw1and6()
         {

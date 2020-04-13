@@ -1,6 +1,7 @@
 ﻿using LudoGameEngine.Database;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xunit;
 
@@ -13,25 +14,19 @@ namespace LudoGameEngine.Tests
         [Fact]
         public void StoreNewGame()
         {
+            //arrange
             LudoContext context = new LudoContext();
-            var game = new Game()
-            {
-                Players = new List<Player>() { new Player() { Name = "Kålle", Color = Color.Blue } }
-            };
-
-            context.Game.Add(game);
-
-            context.SaveChanges();
+            Game game = new Game();
             context = new LudoContext();
+            game.HasFinished = true;
+            game.WinnerPlayerName = "Osborn";
 
-            game.HasFinished = false;
-            game.Players[0].Score += 1;
-
-            context.Game.Update(game);
-
+            //act
+            context.Game.Add(game);
             context.SaveChanges();
-        }
 
-       
+            //assert
+            Assert.Equal("Osborn", context.Game.Where()
+        }
     }
 }
