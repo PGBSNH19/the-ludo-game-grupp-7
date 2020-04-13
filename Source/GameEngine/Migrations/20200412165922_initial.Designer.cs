@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LudoGameEngine.Migrations
 {
     [DbContext(typeof(LudoContext))]
-    [Migration("20200410163334_Initial")]
-    partial class Initial
+    [Migration("20200412165922_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
